@@ -188,6 +188,34 @@
             border-color: var(--primary-color);
         }
 
+        /* Contenedor para el input de contraseña con el botón del ojito */
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-container input {
+            padding-right: 45px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #64748b;
+            padding: 0;
+            margin: 0;
+            width: auto;
+        }
+
+        .toggle-password:hover {
+            color: var(--primary-color);
+        }
+
         button.btn-action {
             background-color: var(--primary-color);
             color: white;
@@ -527,7 +555,7 @@
         }
 
         .billboard-item img {
-            height: 40px; /* Altura fija uniforme para evitar distorsión */
+            height: 40px;
             max-width: 150px;
             object-fit: contain;
             filter: brightness(0) invert(1);
@@ -920,7 +948,10 @@
             </div>
             <div class="form-group">
                 <label>Contraseña</label>
-                <input type="password" id="modalPass" placeholder="Contraseña">
+                <div class="password-container">
+                    <input type="password" id="modalPass" placeholder="Contraseña">
+                    <button type="button" class="toggle-password" id="togglePassBtn" onclick="togglePasswordVisibility()">👁️</button>
+                </div>
             </div>
             <div class="modal-actions">
                 <button class="btn-action" style="background-color: #64748b;" onclick="cerrarModalLogin()">Cancelar</button>
@@ -1039,6 +1070,18 @@
             document.getElementById('loginModal').style.display = 'none';
         }
 
+        function togglePasswordVisibility() {
+            let passInput = document.getElementById('modalPass');
+            let btn = document.getElementById('togglePassBtn');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                btn.innerText = '🙈';
+            } else {
+                passInput.type = 'password';
+                btn.innerText = '👁️';
+            }
+        }
+
         function validarCredencialesModal() {
             let u = document.getElementById('modalUser').value.trim();
             let p = document.getElementById('modalPass').value.trim();
@@ -1100,11 +1143,9 @@
             if(!nombre) { alert("Ingresa el nombre del patrocinador."); return; }
 
             if(editIndex === -1) {
-                // Nuevo
                 patrocinadores.push({ nombre, logo });
                 alert("Patrocinador agregado exitosamente.");
             } else {
-                // Modificar existente (si no seleccionó nueva imagen, mantiene la anterior)
                 if(!logo) {
                     logo = patrocinadores[editIndex].logo;
                 }
