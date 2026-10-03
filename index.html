@@ -6,10 +6,11 @@
     <title>Liga de Sóftbol Villa Juárez</title>
     <style>
         :root {
-            --primary-color: #1b4d3e;
-            --secondary-color: #f4f6f8;
-            --accent-color: #d97706;
-            --text-color: #333;
+            --primary-color: #0f172a; /* Azul marino deportivo muy elegante */
+            --secondary-color: #f1f5f9;
+            --accent-color: #2563eb;  /* Azul rey vibrante */
+            --highlight-color: #f59e0b; /* Naranja/Dorado deportivo */
+            --text-color: #1e293b;
         }
 
         body {
@@ -24,22 +25,23 @@
         }
 
         header {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             color: white;
             text-align: center;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 1.8rem 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
         }
 
         header h1 {
             margin: 0;
-            font-size: 1.8rem;
+            font-size: 2rem;
+            letter-spacing: 0.5px;
         }
 
         header p {
             margin: 5px 0 0;
-            font-size: 0.9rem;
-            opacity: 0.8;
+            font-size: 0.95rem;
+            opacity: 0.9;
         }
 
         .nav-tabs {
@@ -51,17 +53,18 @@
         }
 
         .nav-tab {
-            padding: 15px 18px;
+            padding: 15px 16px;
             cursor: pointer;
             font-weight: bold;
-            color: #666;
+            color: #64748b;
             border-bottom: 3px solid transparent;
             transition: all 0.3s ease;
+            font-size: 0.95rem;
         }
 
         .nav-tab.active {
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--accent-color);
+            color: var(--accent-color);
+            border-bottom: 3px solid var(--highlight-color);
         }
 
         .admin-only {
@@ -69,7 +72,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 20px auto;
             padding: 0 15px;
             flex: 1;
@@ -80,9 +83,9 @@
         .tab-content {
             display: none;
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
         .tab-content.active {
@@ -91,29 +94,35 @@
 
         h2 {
             color: var(--primary-color);
-            border-bottom: 2px solid var(--secondary-color);
-            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
             margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            margin-top: 20px;
         }
 
         .admin-box {
-            background: #fdfdfd;
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
         }
 
         .form-row {
             display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 15px;
+            margin-bottom: 12px;
             flex-wrap: wrap;
         }
 
         .form-group {
             flex: 1;
-            min-width: 140px;
+            min-width: 150px;
         }
 
         .form-group label {
@@ -121,26 +130,30 @@
             font-size: 0.85rem;
             margin-bottom: 5px;
             font-weight: bold;
+            color: #475569;
         }
 
         .form-group select, .form-group input {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
             box-sizing: border-box;
+            font-size: 0.95rem;
         }
 
         button.btn-action {
-            background-color: var(--accent-color);
-            color: white;
+            background-color: var(--highlight-color);
+            color: #1e293b;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             font-weight: bold;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             width: 100%;
-            margin-top: 5px;
+            margin-top: 8px;
+            font-size: 1rem;
+            transition: opacity 0.2s;
         }
 
         button.btn-action:hover {
@@ -148,10 +161,11 @@
         }
 
         button.btn-danger {
-            background-color: #dc2626;
+            background-color: #ef4444;
+            color: white;
         }
 
-        /* Modal / Cuadro elegante de inicio de sesión */
+        /* Modal de Login */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -159,7 +173,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -167,11 +181,11 @@
 
         .modal-box {
             background: white;
-            padding: 25px;
-            border-radius: 8px;
+            padding: 30px;
+            border-radius: 10px;
             width: 100%;
-            max-width: 350px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 380px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             box-sizing: border-box;
         }
 
@@ -179,7 +193,7 @@
             margin-top: 0;
             color: var(--primary-color);
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .modal-box .form-group {
@@ -188,8 +202,8 @@
 
         .modal-actions {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 12px;
+            margin-top: 20px;
         }
 
         .modal-actions button {
@@ -197,31 +211,34 @@
             margin-top: 0;
         }
 
-        /* Estilos para lista de equipos y jugadores */
+        /* Tarjetas de Equipos y Roster */
         .team-card {
-            background: #f8fafc;
+            background: #ffffff;
             border: 1px solid #e2e8f0;
+            border-left: 5px solid var(--accent-color);
             border-radius: 6px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .team-header {
-            padding: 12px 15px;
-            background: #e2e8f0;
+            padding: 14px 18px;
+            background: #f8fafc;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            color: var(--primary-color);
         }
 
         .team-header:hover {
-            background: #cbd5e1;
+            background: #f1f5f9;
         }
 
         .team-body {
-            padding: 15px;
+            padding: 18px;
             display: none;
             background: white;
             border-top: 1px solid #e2e8f0;
@@ -229,16 +246,6 @@
 
         .team-body.open {
             display: block;
-        }
-
-        ul.player-list {
-            margin: 0;
-            padding-left: 20px;
-        }
-
-        ul.player-list li {
-            padding: 4px 0;
-            font-size: 0.95rem;
         }
 
         .table-responsive {
@@ -254,9 +261,9 @@
         }
 
         th, td {
-            padding: 10px 12px;
+            padding: 12px 14px;
             text-align: left;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         th {
@@ -265,26 +272,26 @@
         }
 
         tr:hover {
-            background-color: #f9f9f9;
+            background-color: #f8fafc;
         }
 
         footer {
-            background-color: #112e25;
-            color: #ccc;
+            background-color: var(--primary-color);
+            color: #94a3b8;
             text-align: center;
-            padding: 20px 15px;
+            padding: 25px 15px;
             font-size: 0.85rem;
             margin-top: 40px;
+            border-top: 4px solid var(--highlight-color);
         }
 
         footer .admin-access-link {
             margin-top: 10px;
-            font-size: 0.8rem;
-            color: #aaa;
+            font-size: 0.85rem;
         }
 
         footer .admin-access-link span {
-            color: var(--accent-color);
+            color: var(--highlight-color);
             cursor: pointer;
             text-decoration: underline;
             font-weight: bold;
@@ -292,11 +299,11 @@
 
         @media (max-width: 600px) {
             .nav-tab {
-                padding: 12px 10px;
+                padding: 12px 8px;
                 font-size: 0.8rem;
             }
             th, td {
-                padding: 8px;
+                padding: 8px 10px;
                 font-size: 0.8rem;
             }
         }
@@ -306,24 +313,26 @@
 
     <header>
         <h1>Liga de Sóftbol Villa Juárez</h1>
-        <p>Control Automatizado de Posiciones y Estadísticas</p>
+        <p>Control Oficial de Rol, Posiciones y Estadísticas</p>
     </header>
 
     <div class="nav-tabs">
         <div class="nav-tab active" onclick="switchTab(event, 'posiciones')">🏆 Posiciones</div>
+        <div class="nav-tab" onclick="switchTab(event, 'rol')">📅 Rol de Juegos</div>
         <div class="nav-tab" onclick="switchTab(event, 'resultados')">⚾ Resultados</div>
-        <div class="nav-tab" onclick="switchTab(event, 'equipos')">👥 Equipos y Rosters</div>
+        <div class="nav-tab" onclick="switchTab(event, 'equipos')">👥 Equipos y Roster</div>
         <!-- Pestañas protegidas -->
         <div id="tab-admin-eq" class="nav-tab admin-only" onclick="switchTab(event, 'admEquipos')">⚙️ Admin Equipos</div>
+        <div id="tab-rol-admin" class="nav-tab admin-only" onclick="switchTab(event, 'admRol')">🗓️ Admin Rol</div>
         <div id="tab-captura" class="nav-tab admin-only" onclick="switchTab(event, 'captura')">⚡ Registrar Marcador</div>
     </div>
 
     <div class="container">
 
-        <!-- SECCIÓN 1: POSICIONES -->
+        <!-- 1. POSICIONES -->
         <div id="posiciones" class="tab-content active">
             <h2>Tabla de Posiciones General</h2>
-            <p>Se actualiza de forma automática incluyendo carreras anotadas y recibidas.</p>
+            <p>Estadísticas generales actualizadas de la temporada.</p>
             <div class="table-responsive">
                 <table>
                     <thead>
@@ -338,17 +347,24 @@
                             <th>DIF</th>
                         </tr>
                     </thead>
-                    <tbody id="standingsTableBody">
-                        <!-- Generado por JS -->
-                    </tbody>
+                    <tbody id="standingsTableBody"></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- SECCIÓN 2: RESULTADOS -->
+        <!-- 2. ROL DE JUEGOS PROGRAMADOS -->
+        <div id="rol" class="tab-content">
+            <h2>Rol de Juegos Programados</h2>
+            <p>Consulta los próximos enfrentamientos organizados por jornada.</p>
+            <div id="rolContainer">
+                <p style="color: #64748b;">No hay juegos programados por el momento.</p>
+            </div>
+        </div>
+
+        <!-- 3. RESULTADOS -->
         <div id="resultados" class="tab-content">
             <h2>Historial de Resultados</h2>
-            <p>Lista de partidos jugados en la temporada.</p>
+            <p>Marcadores finales de los partidos jugados.</p>
             <div class="table-responsive">
                 <table>
                     <thead>
@@ -359,46 +375,39 @@
                         </tr>
                     </thead>
                     <tbody id="resultsTableBody">
-                        <tr>
-                            <td colspan="3" style="text-align: center; color: #777;">Aún no hay juegos registrados.</td>
-                        </tr>
+                        <tr><td colspan="3" style="text-align: center; color: #64748b;">Aún no hay juegos registrados.</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- SECCIÓN 3: EQUIPOS Y ROSTERS (Público) -->
+        <!-- 4. EQUIPOS Y ROSTERS (Con HR, CP y Ponches) -->
         <div id="equipos" class="tab-content">
-            <h2>Equipos Participantes y Jugadores</h2>
-            <p>Haz clic en el nombre de cualquier equipo para ver su lista de jugadores inscritos.</p>
-            <div id="teamsContainer">
-                <!-- Generado por JS -->
-            </div>
+            <h2>Equipos y Estadísticas de Jugadores</h2>
+            <p>Haz clic en cualquier equipo para desplegar su roster de jugadores y estadísticas de bateo/pitcheo.</p>
+            <div id="teamsContainer"></div>
         </div>
 
-        <!-- SECCIÓN 4: ADMINISTRAR EQUIPOS (Protegida) -->
+        <!-- 5. ADMIN: GESTIÓN DE EQUIPOS Y JUGADORES -->
         <div id="admEquipos" class="tab-content">
-            <h2>Gestión de Equipos y Roster</h2>
-            <p>Agrega nuevos equipos a la liga o registra jugadores para cada plantilla.</p>
+            <h2>Administración de Equipos y Jugadores</h2>
             
             <div class="admin-box">
                 <h3>Agregar Nuevo Equipo</h3>
                 <div class="form-row">
                     <div class="form-group">
-                        <input type="text" id="newTeamName" placeholder="Nombre del equipo (Ej. Algodoneros)">
+                        <input type="text" id="newTeamName" placeholder="Nombre del equipo (Ej. Diablos)">
                     </div>
-                    <button class="btn-action" style="max-width: 150px;" onclick="agregarEquipo()">Crear Equipo</button>
+                    <button class="btn-action" style="max-width: 160px;" onclick="agregarEquipo()">Crear Equipo</button>
                 </div>
             </div>
 
             <div class="admin-box">
-                <h3>Agregar Jugador a un Equipo</h3>
+                <h3>Registrar Jugador y Estadísticas</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Seleccionar Equipo</label>
-                        <select id="selectTeamForPlayer">
-                            <!-- Llenado por JS -->
-                        </select>
+                        <select id="selectTeamForPlayer"></select>
                     </div>
                     <div class="form-group">
                         <label>Nombre del Jugador</label>
@@ -409,83 +418,119 @@
                         <input type="number" id="playerNumber" placeholder="Ej. 23">
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Home Runs (HR)</label>
+                        <input type="number" id="playerHR" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Carreras Producidas (CP)</label>
+                        <input type="number" id="playerCP" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Ponches (P)</label>
+                        <input type="number" id="playerPonches" min="0" value="0">
+                    </div>
+                </div>
                 <button class="btn-action" onclick="agregarJugador()">Añadir Jugador al Roster</button>
             </div>
 
             <div class="admin-box" style="border-color: #fca5a5;">
-                <h3 style="color: #dc2626;">Eliminar Equipo</h3>
+                <h3 style="color: #ef4444;">Eliminar Equipo</h3>
                 <div class="form-row">
                     <div class="form-group">
-                        <select id="selectTeamToDelete">
-                            <!-- Llenado por JS -->
-                        </select>
+                        <select id="selectTeamToDelete"></select>
                     </div>
-                    <button class="btn-action btn-danger" style="max-width: 150px;" onclick="eliminarEquipo()">Eliminar Equipo</button>
+                    <button class="btn-action btn-danger" style="max-width: 160px;" onclick="eliminarEquipo()">Eliminar</button>
                 </div>
             </div>
             
-            <button class="btn-action" style="background-color: #666;" onclick="cerrarSesionAdmin()">Cerrar Sesión de Administrador</button>
+            <button class="btn-action" style="background-color: #475569;" onclick="cerrarSesionAdmin()">Cerrar Sesión de Administrador</button>
         </div>
 
-        <!-- SECCIÓN 5: CAPTURAR RESULTADOS (Protegida) -->
+        <!-- 6. ADMIN: PROGRAMAR ROL DE JUEGOS -->
+        <div id="admRol" class="tab-content">
+            <h2>Programar Rol de Juegos por Jornada</h2>
+            <div class="admin-box">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Jornada (Ej. Jornada 1)</label>
+                        <input type="text" id="rolJornada" placeholder="Jornada 1">
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha y Hora</label>
+                        <input type="text" id="rolFecha" placeholder="Sáb 15 Oct - 16:00 hrs">
+                    </div>
+                    <div class="form-group">
+                        <label>Campo</label>
+                        <input type="text" id="rolCampo" placeholder="Campo Municipal 1">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Equipo Local</label>
+                        <select id="rolLocal"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Equipo Visitante</label>
+                        <select id="rolVisitante"></select>
+                    </div>
+                </div>
+                <button class="btn-action" onclick="agregarJuegoRol()">Programar Partido</button>
+            </div>
+            <button class="btn-action" style="background-color: #475569;" onclick="cerrarSesionAdmin()">Cerrar Sesión de Administrador</button>
+        </div>
+
+        <!-- 7. ADMIN: REGISTRAR MARCADOR -->
         <div id="captura" class="tab-content">
-            <h2>Capturar Marcador de Partido</h2>
-            <p>Registra los marcadores oficiales. Los cambios se reflejarán en la tabla pública.</p>
-            
+            <h2>Registrar Marcador Oficial</h2>
             <div class="admin-box">
                 <div class="form-row">
                     <div class="form-group">
                         <label>Equipo Local</label>
-                        <select id="localTeam">
-                            <!-- Llenado por JS -->
-                        </select>
+                        <select id="localTeam"></select>
                     </div>
                     <div class="form-group">
                         <label>Carreras Local</label>
                         <input type="number" id="localScore" min="0" value="0">
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label>Equipo Visitante</label>
-                        <select id="visitTeam">
-                            <!-- Llenado por JS -->
-                        </select>
+                        <select id="visitTeam"></select>
                     </div>
                     <div class="form-group">
                         <label>Carreras Visitante</label>
                         <input type="number" id="visitScore" min="0" value="0">
                     </div>
                 </div>
-
                 <button class="btn-action" onclick="registrarJuego()">Guardar y Actualizar Tabla</button>
-                <button class="btn-action" style="background-color: #666; margin-top: 10px;" onclick="cerrarSesionAdmin()">Cerrar Sesión de Administrador</button>
             </div>
+            <button class="btn-action" style="background-color: #475569;" onclick="cerrarSesionAdmin()">Cerrar Sesión de Administrador</button>
         </div>
 
     </div>
 
-    <!-- Cuadro elegante rectangular para inicio de sesión (Modal) -->
+    <!-- Modal de Login -->
     <div id="loginModal" class="modal-overlay">
         <div class="modal-box">
             <h3>Acceso de Administrador</h3>
             <div class="form-group">
                 <label>Usuario</label>
-                <input type="text" id="modalUser" placeholder="Ingresa tu usuario">
+                <input type="text" id="modalUser" placeholder="Usuario">
             </div>
             <div class="form-group">
                 <label>Contraseña</label>
-                <input type="password" id="modalPass" placeholder="Ingresa tu contraseña">
+                <input type="password" id="modalPass" placeholder="Contraseña">
             </div>
             <div class="modal-actions">
-                <button class="btn-action" style="background-color: #666;" onclick="cerrarModalLogin()">Cancelar</button>
+                <button class="btn-action" style="background-color: #64748b;" onclick="cerrarModalLogin()">Cancelar</button>
                 <button class="btn-action" onclick="validarCredencialesModal()">Ingresar</button>
             </div>
         </div>
     </div>
 
-    <!-- Pie de página con derechos reservados y acceso de administrador -->
     <footer>
         <div>| Derechos Reservados Tonny Macías Limón | Villa Juárez Navolato Sinaloa | 2026 |</div>
         <div class="admin-access-link">
@@ -494,21 +539,24 @@
     </footer>
 
     <script>
-        // Cuentas de Administrador
         const ADMINS_PERMITIDOS = {
             "tonny": "softbol2026",
             "admin": "liga1234"
         };
 
-        // Base de datos de equipos, estadísticas y jugadores
-        let equipos = {
-            "Cachorros": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [{nombre: "Carlos Pérez", num: 10}, {nombre: "Mario Soto", num: 22}] },
-            "Diablos Rojos": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [{nombre: "José Luis Valenzuela", num: 7}] },
-            "Rieleros": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
-            "Yankees": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] }
+        let equipos = JSON.parse(localStorage.getItem('softbol_equipos')) || {
+            "Cachorros": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [{nombre: "Carlos Pérez", num: 10, hr: 2, cp: 5, p: 1}] },
+            "Diablos Rojos": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] }
         };
 
-        let historialResultados = [];
+        let historialResultados = JSON.parse(localStorage.getItem('softbol_resultados')) || [];
+        let rolJuegos = JSON.parse(localStorage.getItem('softbol_rol')) || [];
+
+        function guardarDatos() {
+            localStorage.setItem('softbol_equipos', JSON.stringify(equipos));
+            localStorage.setItem('softbol_resultados', JSON.stringify(historialResultados));
+            localStorage.setItem('softbol_rol', JSON.stringify(rolJuegos));
+        }
 
         function switchTab(evt, tabName) {
             const contents = document.querySelectorAll('.tab-content');
@@ -520,14 +568,12 @@
             document.getElementById(tabName).classList.add('active');
             evt.currentTarget.classList.add('active');
 
-            if(tabName === 'posiciones') {
-                actualizarTablaPosiciones();
-            } else if(tabName === 'equipos') {
-                renderizarListaEquipos();
-            }
+            if(tabName === 'posiciones') actualizarTablaPosiciones();
+            else if(tabName === 'equipos') renderizarListaEquipos();
+            else if(tabName === 'resultados') actualizarTablaResultados();
+            else if(tabName === 'rol') renderizarRolJuegos();
         }
 
-        // --- FUNCIONES DEL MODAL DE LOGIN ---
         function abrirModalLogin() {
             document.getElementById('modalUser').value = "";
             document.getElementById('modalPass').value = "";
@@ -540,17 +586,17 @@
         }
 
         function validarCredencialesModal() {
-            let usuarioIngresado = document.getElementById('modalUser').value.trim();
-            let passwordIngresado = document.getElementById('modalPass').value.trim();
+            let u = document.getElementById('modalUser').value.trim();
+            let p = document.getElementById('modalPass').value.trim();
 
-            if (ADMINS_PERMITIDOS[usuarioIngresado] && ADMINS_PERMITIDOS[usuarioIngresado] === passwordIngresado) {
+            if (ADMINS_PERMITIDOS[u] && ADMINS_PERMITIDOS[u] === p) {
                 cerrarModalLogin();
-                // Mostrar pestañas exclusivas de administrador
                 document.getElementById('tab-admin-eq').style.display = 'block';
+                document.getElementById('tab-rol-admin').style.display = 'block';
                 document.getElementById('tab-captura').style.display = 'block';
                 switchTab({ currentTarget: document.getElementById('tab-admin-eq') }, 'admEquipos');
                 actualizarSelectsEquipos();
-                alert(`¡Bienvenido, ${usuarioIngresado}! Acceso de administrador concedido.`);
+                alert(`¡Bienvenido, ${u}! Acceso concedido.`);
             } else {
                 alert("Usuario o contraseña incorrectos.");
             }
@@ -558,181 +604,212 @@
 
         function cerrarSesionAdmin() {
             document.getElementById('tab-admin-eq').style.display = 'none';
+            document.getElementById('tab-rol-admin').style.display = 'none';
             document.getElementById('tab-captura').style.display = 'none';
             switchTab({ currentTarget: document.querySelectorAll('.nav-tab')[0] }, 'posiciones');
-            alert("Sesión de administrador cerrada correctamente.");
+            alert("Sesión de administrador cerrada.");
         }
 
         // --- GESTIÓN DE EQUIPOS Y JUGADORES ---
         function agregarEquipo() {
-            let nombreInput = document.getElementById('newTeamName');
-            let nombre = nombreInput.value.trim();
-
-            if(!nombre) {
-                alert("Escribe un nombre válido para el equipo.");
-                return;
-            }
-
-            if(equipos[nombre]) {
-                alert("Ese equipo ya existe en la liga.");
-                return;
-            }
+            let input = document.getElementById('newTeamName');
+            let nombre = input.value.trim();
+            if(!nombre) { alert("Escribe un nombre válido."); return; }
+            if(equipos[nombre]) { alert("El equipo ya existe."); return; }
 
             equipos[nombre] = { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] };
-            nombreInput.value = "";
+            guardarDatos();
+            input.value = "";
             actualizarSelectsEquipos();
             actualizarTablaPosiciones();
-            alert(`Equipo "${nombre}" agregado exitosamente.`);
+            alert(`Equipo "${nombre}" creado con éxito.`);
         }
 
         function eliminarEquipo() {
-            let select = document.getElementById('selectTeamToDelete');
-            let nombre = select.value;
-
+            let nombre = document.getElementById('selectTeamToDelete').value;
             if(!nombre) return;
-
-            if(confirm(`¿Estás seguro de eliminar al equipo "${nombre}"? Se perderán sus datos de la temporada.`)) {
+            if(confirm(`¿Eliminar al equipo "${nombre}"?`)) {
                 delete equipos[nombre];
+                guardarDatos();
                 actualizarSelectsEquipos();
                 actualizarTablaPosiciones();
-                alert("Equipo eliminado correctamente.");
+                alert("Equipo eliminado.");
             }
         }
 
         function agregarJugador() {
-            let equipoSelect = document.getElementById('selectTeamForPlayer').value;
-            let nombreJugador = document.getElementById('playerName').value.trim();
-            let numeroJugador = document.getElementById('playerNumber').value;
+            let equipo = document.getElementById('selectTeamForPlayer').value;
+            let nombre = document.getElementById('playerName').value.trim();
+            let num = document.getElementById('playerNumber').value;
+            let hr = parseInt(document.getElementById('playerHR').value) || 0;
+            let cp = parseInt(document.getElementById('playerCP').value) || 0;
+            let p = parseInt(document.getElementById('playerPonches').value) || 0;
 
-            if(!nombreJugador) {
-                alert("Ingresa el nombre del jugador.");
+            if(!nombre) { alert("Ingresa el nombre del jugador."); return; }
+
+            equipos[equipo].jugadores.push({ nombre, num: num || "S/N", hr, cp, p });
+            guardarDatos();
+            
+            document.getElementById('playerName').value = "";
+            document.getElementById('playerNumber').value = "";
+            document.getElementById('playerHR').value = 0;
+            document.getElementById('playerCP').value = 0;
+            document.getElementById('playerPonches').value = 0;
+            alert(`Jugador añadido correctamente.`);
+        }
+
+        // --- PROGRAMAR ROL DE JUEGOS ---
+        function agregarJuegoRol() {
+            let jornada = document.getElementById('rolJornada').value.trim();
+            let fecha = document.getElementById('rolFecha').value.trim();
+            let campo = document.getElementById('rolCampo').value.trim();
+            let local = document.getElementById('rolLocal').value;
+            let visitante = document.getElementById('rolVisitante').value;
+
+            if(!jornada || !fecha || !local || !visitante) {
+                alert("Completa los campos obligatorios del rol.");
+                return;
+            }
+            if(local === visitante) {
+                alert("El equipo local y visitante deben ser diferentes.");
                 return;
             }
 
-            equipos[equipoSelect].jugadores.push({
-                nombre: nombreJugador,
-                num: numeroJugador ? numeroJugador : "S/N"
-            });
-
-            document.getElementById('playerName').value = "";
-            document.getElementById('playerNumber').value = "";
-            alert(`Jugador agregado correctamente a ${equipoSelect}.`);
+            rolJuegos.push({ jornada, fecha, campo: campo || "Por definir", local, visitante });
+            guardarDatos();
+            alert("Partido programado con éxito en el rol.");
+            document.getElementById('rolJornada').value = "";
+            document.getElementById('rolFecha').value = "";
+            document.getElementById('rolCampo').value = "";
         }
 
         function actualizarSelectsEquipos() {
-            let selectLocal = document.getElementById('localTeam');
-            let selectVisit = document.getElementById('visitTeam');
-            let selectAddPlayer = document.getElementById('selectTeamForPlayer');
-            let selectDelete = document.getElementById('selectTeamToDelete');
+            let nombres = Object.keys(equipos);
+            let opts = "";
+            nombres.forEach(n => opts += `<option value="${n}">${n}</option>`);
 
-            let nombresEquipos = Object.keys(equipos);
-
-            let optionsHtml = "";
-            nombresEquipos.forEach(eq => {
-                optionsHtml += `<option value="${eq}">${eq}</option>`;
+            ['selectTeamForPlayer', 'selectTeamToDelete', 'localTeam', 'visitTeam', 'rolLocal', 'rolVisitante'].forEach(id => {
+                let el = document.getElementById(id);
+                if(el) el.innerHTML = opts;
             });
-
-            selectLocal.innerHTML = optionsHtml;
-            selectVisit.innerHTML = optionsHtml;
-            selectAddPlayer.innerHTML = optionsHtml;
-            selectDelete.innerHTML = optionsHtml;
         }
 
         function renderizarListaEquipos() {
             let container = document.getElementById('teamsContainer');
             container.innerHTML = "";
+            let nombres = Object.keys(equipos);
 
-            let nombresEquipos = Object.keys(equipos);
-
-            if(nombresEquipos.length === 0) {
-                container.innerHTML = "<p style='color: #777;'>No hay equipos registrados en la liga.</p>";
+            if(nombres.length === 0) {
+                container.innerHTML = "<p style='color: #64748b;'>No hay equipos registrados.</p>";
                 return;
             }
 
-            nombresEquipos.forEach(nombre => {
+            nombres.forEach(nombre => {
                 let eq = equipos[nombre];
                 let card = document.createElement('div');
                 card.className = 'team-card';
 
-                let jugadoresHtml = "";
-                if(eq.jugadores.length === 0) {
-                    jugadoresHtml = "<p style='font-size:0.9rem; color:#777; margin:5px 0;'>No hay jugadores registrados todavía.</p>";
+                let jHtml = "";
+                if(!eq.jugadores || eq.jugadores.length === 0) {
+                    jHtml = "<p style='font-size:0.9rem; color:#64748b; margin:5px 0;'>Sin jugadores registrados.</p>";
                 } else {
-                    jugadoresHtml = "<ul class='player-list'>";
+                    jHtml = `<div class="table-responsive"><table>
+                        <thead><tr><th>#</th><th>Jugador</th><th>HR</th><th>CP</th><th>Ponches (P)</th></tr></thead><tbody>`;
                     eq.jugadores.forEach(j => {
-                        jugadoresHtml += `<li><b>#${j.num}</b> - ${j.nombre}</li>`;
+                        jHtml += `<tr><td><b>${j.num}</b></td><td>${j.nombre}</td><td>${j.hr}</td><td>${j.cp}</td><td>${j.p}</td></tr>`;
                     });
-                    jugadoresHtml += "</ul>";
+                    jHtml += `</tbody></table></div>`;
                 }
 
                 card.innerHTML = `
                     <div class="team-header" onclick="toggleTeamBody(this)">
-                        <span>⚾ ${nombre} (${eq.jugadores.length} jugadores)</span>
+                        <span>⚾ ${nombre} (${eq.jugadores ? eq.jugadores.length : 0} jugadores)</span>
                         <span>▼</span>
                     </div>
                     <div class="team-body">
-                        <strong>Roster de Jugadores:</strong>
-                        ${jugadoresHtml}
+                        <strong>Roster y Estadísticas:</strong>
+                        ${jHtml}
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        function toggleTeamBody(headerElem) {
-            let body = headerElem.nextElementSibling;
-            body.classList.toggle('open');
+        function toggleTeamBody(header) {
+            header.nextElementSibling.classList.toggle('open');
         }
 
-        // --- REGISTRO DE JUEGOS ---
+        function renderizarRolJuegos() {
+            let container = document.getElementById('rolContainer');
+            container.innerHTML = "";
+
+            if(rolJuegos.length === 0) {
+                container.innerHTML = "<p style='color: #64748b;'>No hay juegos programados en el rol actualmente.</p>";
+                return;
+            }
+
+            // Agrupar por jornada
+            let jornadasMap = {};
+            rolJuegos.forEach(j => {
+                if(!jornadasMap[j.jornada]) jornadasMap[j.jornada] = [];
+                jornadasMap[j.jornada].push(j);
+            });
+
+            for(let jor in jornadasMap) {
+                let box = document.createElement('div');
+                box.className = 'admin-box';
+                box.style.background = "white";
+                
+                let html = `<h3>📌 ${jor}</h3><div class="table-responsive"><table>
+                    <thead><tr><th>Fecha / Hora</th><th>Campo</th><th>Local</th><th>VS</th><th>Visitante</th></tr></thead><tbody>`;
+                
+                jornadasMap[jor].forEach(p => {
+                    html += `<tr><td>${p.fecha}</td><td>${p.campo}</td><td><b>${p.local}</b></td><td>vs</td><td><b>${p.visitante}</b></td></tr>`;
+                });
+                html += `</tbody></table></div>`;
+                box.innerHTML = html;
+                container.appendChild(box);
+            }
+        }
+
         function registrarJuego() {
             let local = document.getElementById('localTeam').value;
             let visitante = document.getElementById('visitTeam').value;
-            let scoreLocal = parseInt(document.getElementById('localScore').value);
-            let scoreVisitante = parseInt(document.getElementById('visitScore').value);
+            let sLocal = parseInt(document.getElementById('localScore').value);
+            let sVisit = parseInt(document.getElementById('visitScore').value);
 
-            if(local === visitante) {
-                alert("El equipo local y el visitante no pueden ser el mismo.");
-                return;
-            }
+            if(local === visitante) { alert("Los equipos deben ser diferentes."); return; }
 
             equipos[local].jj++;
             equipos[visitante].jj++;
+            equipos[local].ca += sLocal;
+            equipos[local].cr += sVisit;
+            equipos[visitante].ca += sVisit;
+            equipos[visitante].cr += sLocal;
 
-            equipos[local].ca += scoreLocal;
-            equipos[local].cr += scoreVisitante;
-
-            equipos[visitante].ca += scoreVisitante;
-            equipos[visitante].cr += scoreLocal;
-
-            if(scoreLocal > scoreVisitante) {
+            if(sLocal > sVisit) {
                 equipos[local].jg++;
                 equipos[visitante].jp++;
-            } else if(scoreVisitante > scoreLocal) {
+            } else if(sVisit > sLocal) {
                 equipos[visitante].jg++;
                 equipos[local].jp++;
             } else {
-                alert("En el sóftbol regular usualmente no hay empates, pero si ocurrió, ajusta las carreras para definir un ganador.");
+                alert("Ajusta las carreras para definir un ganador.");
                 equipos[local].jj--;
                 equipos[visitante].jj--;
-                equipos[local].ca -= scoreLocal;
-                equipos[local].cr -= scoreVisitante;
-                equipos[visitante].ca -= scoreVisitante;
-                equipos[visitante].cr -= scoreLocal;
+                equipos[local].ca -= sLocal;
+                equipos[local].cr -= sVisit;
+                equipos[visitante].ca -= sVisit;
+                equipos[visitante].cr -= sLocal;
                 return;
             }
 
-            historialResultados.push({
-                local: local,
-                score: `${scoreLocal} - ${scoreVisitante}`,
-                visitante: visitante
-            });
-
-            actualizarTablaResultados();
+            historialResultados.push({ local, score: `${sLocal} - ${sVisit}`, visitante });
+            guardarDatos();
             actualizarTablaPosiciones();
+            actualizarTablaResultados();
 
             alert("Carreras anotadas exitosamente, favor de revisar la tabla de posiciones y verificar que esté correcto.");
-            
             document.getElementById('localScore').value = 0;
             document.getElementById('visitScore').value = 0;
         }
@@ -740,10 +817,13 @@
         function actualizarTablaResultados() {
             let tbody = document.getElementById('resultsTableBody');
             tbody.innerHTML = "";
-
-            historialResultados.forEach(partido => {
+            if(historialResultados.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #64748b;">Aún no hay juegos registrados.</td></tr>`;
+                return;
+            }
+            historialResultados.forEach(p => {
                 let tr = document.createElement('tr');
-                tr.innerHTML = `<td>${partido.local}</td><td><strong>${partido.score}</strong></td><td>${partido.visitante}</td>`;
+                tr.innerHTML = `<td>${p.local}</td><td><strong>${p.score}</strong></td><td>${p.visitante}</td>`;
                 tbody.appendChild(tr);
             });
         }
@@ -752,34 +832,36 @@
             let tbody = document.getElementById('standingsTableBody');
             tbody.innerHTML = "";
 
-            let arrayEquipos = Object.keys(equipos).map(nombre => {
+            let arr = Object.keys(equipos).map(nombre => {
                 let e = equipos[nombre];
                 let pct = e.jj > 0 ? (e.jg / e.jj).toFixed(3) : ".000";
                 let dif = e.ca - e.cr;
                 return { nombre, ...e, pct, dif };
             });
 
-            arrayEquipos.sort((a, b) => b.jg - a.jg || a.jp - b.jp || b.dif - a.dif);
+            arr.sort((a, b) => b.jg - a.jg || a.jp - b.jp || b.dif - a.dif);
 
-            arrayEquipos.forEach((eq, index) => {
+            arr.forEach((eq, idx) => {
                 let tr = document.createElement('tr');
-                let difTexto = eq.dif > 0 ? `+${eq.dif}` : eq.dif;
+                let difTxt = eq.dif > 0 ? `+${eq.dif}` : eq.dif;
                 tr.innerHTML = `
-                    <td>${index + 1}. ${eq.nombre}</td>
+                    <td>${idx + 1}. ${eq.nombre}</td>
                     <td>${eq.jj}</td>
                     <td>${eq.jg}</td>
                     <td>${eq.jp}</td>
                     <td>${eq.pct.replace('0.', '.')}</td>
                     <td>${eq.ca}</td>
                     <td>${eq.cr}</td>
-                    <td><strong>${difTexto}</strong></td>
+                    <td><strong>${difTxt}</strong></td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        // Cargar datos iniciales al abrir
+        // Inicializar
         actualizarTablaPosiciones();
+        actualizarSelectsEquipos();
+        renderizarRolJuegos();
     </script>
 
 </body>
