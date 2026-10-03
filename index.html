@@ -7,10 +7,11 @@
     <style>
         :root {
             --primary-color: #6a1b29; /* Guinda deportivo */
-            --secondary-color: #f8fafc;
-            --accent-color: #000000;  /* Negro */
-            --highlight-color: #a93246; 
+            --secondary-color: #f1f5f9;
+            --accent-color: #0f172a;  /* Negro / Gris muy oscuro profesional */
+            --highlight-color: #d97706; /* Dorado / Naranja de líder */
             --text-color: #1e293b;
+            --card-bg: #ffffff;
         }
 
         body {
@@ -28,44 +29,54 @@
             background-color: var(--primary-color);
             color: white;
             text-align: center;
-            padding: 1.8rem 1rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            padding: 2rem 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-bottom: 4px solid var(--accent-color);
         }
 
         header h1 {
             margin: 0;
-            font-size: 2rem;
+            font-size: 2.2rem;
             letter-spacing: 0.5px;
+            font-weight: 800;
         }
 
         header p {
-            margin: 5px 0 0;
-            font-size: 0.95rem;
+            margin: 8px 0 0;
+            font-size: 1rem;
             opacity: 0.9;
+            font-weight: 300;
         }
 
         .nav-tabs {
             display: flex;
             justify-content: center;
             background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
             flex-wrap: wrap;
-            border-bottom: 2px solid #e2e8f0;
+            gap: 5px;
+            padding: 5px;
         }
 
         .nav-tab {
-            padding: 15px 16px;
+            padding: 12px 18px;
             cursor: pointer;
-            font-weight: bold;
-            color: #475569;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #64748b;
+            border-radius: 6px;
+            transition: all 0.25s ease;
             font-size: 0.95rem;
         }
 
-        .nav-tab.active {
+        .nav-tab:hover {
+            background-color: #f8fafc;
             color: var(--primary-color);
-            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .nav-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 2px 6px rgba(106, 27, 41, 0.3);
         }
 
         .admin-only {
@@ -74,7 +85,7 @@
 
         .container {
             max-width: 1100px;
-            margin: 20px auto;
+            margin: 25px auto;
             padding: 0 15px;
             flex: 1;
             width: 100%;
@@ -83,10 +94,10 @@
 
         .tab-content {
             display: none;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
         }
 
         .tab-content.active {
@@ -95,23 +106,26 @@
 
         h2 {
             color: var(--primary-color);
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 12px;
             margin-top: 0;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+            font-weight: 700;
         }
 
         h3 {
             color: var(--primary-color);
             margin-top: 20px;
+            font-size: 1.2rem;
         }
 
         .admin-box {
             background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            padding: 20px;
-            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            padding: 22px;
+            border-radius: 10px;
             margin-bottom: 25px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
         }
 
         .form-row {
@@ -129,18 +143,27 @@
         .form-group label {
             display: block;
             font-size: 0.8rem;
-            margin-bottom: 4px;
-            font-weight: bold;
+            margin-bottom: 5px;
+            font-weight: 700;
             color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .form-group select, .form-group input {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             box-sizing: border-box;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            background: #fff;
+            transition: border-color 0.2s;
+        }
+
+        .form-group select:focus, .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
         }
 
         button.btn-action {
@@ -154,16 +177,22 @@
             width: 100%;
             margin-top: 8px;
             font-size: 1rem;
-            transition: opacity 0.2s;
+            transition: background-color 0.2s, transform 0.1s;
         }
 
         button.btn-action:hover {
-            opacity: 0.9;
+            background-color: #53121f;
+        }
+
+        button.btn-action:active {
+            transform: scale(0.98);
         }
 
         button.btn-danger {
             background-color: #ef4444;
-            color: white;
+        }
+        button.btn-danger:hover {
+            background-color: #dc2626;
         }
 
         /* Modal de Login */
@@ -174,7 +203,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -182,11 +212,11 @@
 
         .modal-box {
             background: white;
-            padding: 30px;
-            border-radius: 10px;
+            padding: 35px;
+            border-radius: 12px;
             width: 100%;
             max-width: 380px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
             box-sizing: border-box;
         }
 
@@ -217,14 +247,19 @@
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-left: 5px solid var(--primary-color);
-            border-radius: 6px;
-            margin-bottom: 12px;
+            border-radius: 8px;
+            margin-bottom: 14px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            transition: box-shadow 0.2s;
+        }
+
+        .team-card:hover {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
         }
 
         .team-header {
-            padding: 14px 18px;
+            padding: 16px 20px;
             background: #f8fafc;
             font-weight: bold;
             cursor: pointer;
@@ -232,6 +267,7 @@
             justify-content: space-between;
             align-items: center;
             color: var(--primary-color);
+            font-size: 1.05rem;
         }
 
         .team-header:hover {
@@ -239,7 +275,7 @@
         }
 
         .team-body {
-            padding: 18px;
+            padding: 20px;
             display: none;
             background: white;
             border-top: 1px solid #e2e8f0;
@@ -256,43 +292,55 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 0.85rem;
+            margin-top: 10px;
+            font-size: 0.9rem;
             white-space: nowrap;
         }
 
         th, td {
-            padding: 10px 10px;
+            padding: 12px 14px;
             text-align: center;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #f1f5f9;
         }
 
-        th:nth-child(2), td:nth-child(2) {
+        th:nth-child(1), td:nth-child(1) {
             text-align: left;
         }
 
         th {
             background-color: var(--primary-color);
             color: white;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafaf9; /* Filas alternadas muy elegantes */
         }
 
         tr:hover {
-            background-color: #f8fafc;
+            background-color: #f1f5f9;
+        }
+
+        /* Destacar al líder de la tabla general */
+        tr.leader-row {
+            background-color: #fef3c7 !important;
+            border-left: 4px solid var(--highlight-color);
         }
 
         footer {
             background-color: var(--accent-color);
             color: #94a3b8;
             text-align: center;
-            padding: 25px 15px;
+            padding: 30px 15px;
             font-size: 0.85rem;
-            margin-top: 40px;
+            margin-top: auto;
             border-top: 4px solid var(--primary-color);
         }
 
         footer .admin-access-link {
-            margin-top: 10px;
-            font-size: 0.85rem;
+            margin-top: 12px;
+            font-size: 0.9rem;
         }
 
         footer .admin-access-link span {
@@ -304,12 +352,15 @@
 
         @media (max-width: 600px) {
             .nav-tab {
-                padding: 12px 6px;
-                font-size: 0.75rem;
+                padding: 10px 12px;
+                font-size: 0.8rem;
             }
             th, td {
-                padding: 6px;
-                font-size: 0.75rem;
+                padding: 8px;
+                font-size: 0.8rem;
+            }
+            header h1 {
+                font-size: 1.7rem;
             }
         }
     </style>
@@ -337,12 +388,12 @@
         <!-- 1. POSICIONES -->
         <div id="posiciones" class="tab-content active">
             <h2>Tabla de Posiciones General</h2>
-            <p>Estadísticas generales actualizadas de la temporada.</p>
+            <p>Estadísticas generales actualizadas de la temporada[span_0](start_span)[span_0](end_span).</p>
             <div class="table-responsive">
                 <table>
                     <thead>
                         <tr>
-                            <th>Equipo</th>
+                            <th style="text-align: left; padding-left: 15px;">Equipo</th>
                             <th>W</th>
                             <th>L</th>
                             <th>PCT</th>
@@ -385,7 +436,7 @@
         <!-- 4. EQUIPOS Y ROSTERS -->
         <div id="equipos" class="tab-content">
             <h2>Equipos y Estadísticas de Jugadores</h2>
-            <p>Haz clic en cualquier equipo para desplegar su roster y estadísticas detalladas.</p>
+            <p>Haz clic en cualquier equipo para desplegar su roster y estadísticas detalladas[span_1](start_span)[span_1](end_span).</p>
             <div id="teamsContainer"></div>
         </div>
 
@@ -434,7 +485,7 @@
                     </div>
                     <div class="form-group">
                         <label>AVG (Auto)</label>
-                        <input type="text" id="playerAVG" readonly value=".000" style="background:#e2e8f0; font-weight:bold;">
+                        <input type="text" id="playerAVG" readonly value=".000" style="background:#e2e8f0; font-weight:bold; text-align:center;">
                     </div>
                 </div>
                 <div class="form-row">
@@ -803,7 +854,7 @@
 
                 card.innerHTML = `
                     <div class="team-header" onclick="toggleTeamBody(this)">
-                        <span style="display:flex; align-items:center; gap:8px;"><span style="font-size:1.2rem;">${logo}</span> ${nombre} (${eq.jugadores ? eq.jugadores.length : 0} jugadores)</span>
+                        <span style="display:flex; align-items:center; gap:10px;"><span style="font-size:1.3rem;">${logo}</span> ${nombre} <span style="font-size:0.85rem; color:#64748b; font-weight:normal;">(${eq.jugadores ? eq.jugadores.length : 0} jugadores)</span></span>
                         <span>▼</span>
                     </div>
                     <div class="team-body">
@@ -920,13 +971,16 @@
             arr.forEach((eq, idx) => {
                 let logo = obtenerLogo(eq.nombre);
                 let tr = document.createElement('tr');
+                if (idx === 0) {
+                    tr.className = "leader-row";
+                }
                 let dif = (leaderW - eq.w).toFixed(1);
                 tr.innerHTML = `
-                    <td style="text-align:left;">
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <span><b>${idx + 1}</b></span>
-                            <span style="font-size:1.2rem;">${logo}</span>
-                            <b>${eq.nombre}</b>
+                    <td style="text-align:left; padding-left: 15px;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span style="width: 20px; font-weight:bold;">${idx + 1}</span>
+                            <span style="font-size:1.3rem;">${logo}</span>
+                            <b>${eq.nombre}</b> ${idx === 0 ? '👑' : ''}
                         </div>
                     </td>
                     <td><b>${eq.w}</b></td>
