@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rol de Juegos - Liga de Sóftbol</title>
-    <!-- Estilos de diseño -->
+    <title>Control y Rol - Liga de Sóftbol</title>
     <style>
         :root {
-            --primary-color: #1b4d3e; /* Verde diamante / sóftbol */
+            --primary-color: #1b4d3e;
             --secondary-color: #f4f6f8;
-            --accent-color: #d97706; /* Tono naranja/beisbolero */
+            --accent-color: #d97706;
             --text-color: #333;
         }
 
@@ -40,16 +39,16 @@
             opacity: 0.8;
         }
 
-        /* Menú de pestañas */
         .nav-tabs {
             display: flex;
             justify-content: center;
             background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
         }
 
         .nav-tab {
-            padding: 15px 25px;
+            padding: 15px 20px;
             cursor: pointer;
             font-weight: bold;
             color: #666;
@@ -63,7 +62,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 950px;
             margin: 20px auto;
             padding: 0 15px;
         }
@@ -87,7 +86,56 @@
             margin-top: 0;
         }
 
-        /* Tablas */
+        /* Formulario de captura */
+        .admin-box {
+            background: #fdfdfd;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button.btn-action {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button.btn-action:hover {
+            opacity: 0.9;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -110,7 +158,6 @@
             background-color: #f9f9f9;
         }
 
-        /* Responsive para celulares */
         @media (max-width: 600px) {
             .nav-tab {
                 padding: 12px 10px;
@@ -127,58 +174,63 @@
 
     <header>
         <h1>Liga Municipal de Sóftbol</h1>
-        <p>Temporada Oficial - Control de Rol y Estadísticas</p>
+        <p>Control Automatizado de Posiciones y Resultados</p>
     </header>
 
-    <!-- Pestañas de Navegación -->
     <div class="nav-tabs">
-        <div class="nav-tab active" onclick="switchTab(event, 'rol')">📅 Rol de Juegos</div>
+        <div class="nav-tab active" onclick="switchTab(event, 'captura')">⚡ Registrar Resultado</div>
         <div class="nav-tab" onclick="switchTab(event, 'posiciones')">🏆 Posiciones</div>
-        <div class="nav-tab" onclick="switchTab(event, 'resultados')">⚾ Resultados</div>
+        <div class="nav-tab" onclick="switchTab(event, 'resultados')">⚾ Historial de Juegos</div>
     </div>
 
     <div class="container">
 
-        <!-- SECCIÓN 1: ROL DE JUEGOS -->
-        <div id="rol" class="tab-content active">
-            <h2>Próximos Juegos (Jornada 1)</h2>
-            <p>Consulta los horarios, campos y equipos programados para esta semana.</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Fecha / Hora</th>
-                        <th>Campo</th>
-                        <th>Equipo Local</th>
-                        <th>Equipo Visitante</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Sáb 10 Oct - 16:00 hrs</td>
-                        <td>Campo Municipal 1</td>
-                        <td>Diablos Rojos</td>
-                        <td>Rieleros</td>
-                    </tr>
-                    <tr>
-                        <td>Sáb 10 Oct - 18:00 hrs</td>
-                        <td>Campo Municipal 1</td>
-                        <td>Cachorros</td>
-                        <td>Yankees</td>
-                    </tr>
-                    <tr>
-                        <td>Dom 11 Oct - 10:00 hrs</td>
-                        <td>Campo Villa Juárez</td>
-                        <td>Bravos</td>
-                        <td>Azulejos</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- SECCIÓN 1: CAPTURAR RESULTADOS -->
+        <div id="captura" class="tab-content active">
+            <h2>Capturar Marcador de Partido</h2>
+            <p>Selecciona los equipos, anota sus carreras y el sistema actualizará la tabla general automáticamente.</p>
+            
+            <div class="admin-box">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Equipo Local</label>
+                        <select id="localTeam">
+                            <option value="Cachorros">Cachorros</option>
+                            <option value="Diablos Rojos">Diablos Rojos</option>
+                            <option value="Rieleros">Rieleros</option>
+                            <option value="Yankees">Yankees</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Carreras Local</label>
+                        <input type="number" id="localScore" min="0" value="0">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Equipo Visitante</label>
+                        <select id="visitTeam">
+                            <option value="Rieleros">Rieleros</option>
+                            <option value="Cachorros">Cachorros</option>
+                            <option value="Diablos Rojos">Diablos Rojos</option>
+                            <option value="Yankees">Yankees</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Carreras Visitante</label>
+                        <input type="number" id="visitScore" min="0" value="0">
+                    </div>
+                </div>
+
+                <button class="btn-action" onclick="registrarJuego()">Guardar y Actualizar Tabla</button>
+            </div>
         </div>
 
         <!-- SECCIÓN 2: TABLA DE POSICIONES -->
         <div id="posiciones" class="tab-content">
-            <h2>Tabla de Posiciones</h2>
-            <p>Estadísticas generales de los equipos en el torneo.</p>
+            <h2>Tabla de Posiciones General</h2>
+            <p>Se actualiza de forma automática con base en los resultados ingresados.</p>
             <table>
                 <thead>
                     <tr>
@@ -189,58 +241,27 @@
                         <th>PCT</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>1. Cachorros</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>.000</td>
-                    </tr>
-                    <tr>
-                        <td>2. Diablos Rojos</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>.000</td>
-                    </tr>
-                    <tr>
-                        <td>3. Rieleros</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>.000</td>
-                    </tr>
-                    <tr>
-                        <td>4. Yankees</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>.000</td>
-                    </tr>
+                <tbody id="standingsTableBody">
+                    <!-- Generado por JavaScript -->
                 </tbody>
             </table>
         </div>
 
         <!-- SECCIÓN 3: RESULTADOS -->
         <div id="resultados" class="tab-content">
-            <h2>Últimos Resultados</h2>
-            <p>Marcadores finales de la jornada anterior.</p>
+            <h2>Historial de Resultados</h2>
+            <p>Lista de partidos jugados en la temporada.</p>
             <table>
                 <thead>
                     <tr>
-                        <th>Jornada</th>
-                        <th>Equipo Local</th>
+                        <th>Local</th>
                         <th>Score</th>
-                        <th>Equipo Visitante</th>
+                        <th>Visitante</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="resultsTableBody">
                     <tr>
-                        <td>Jornada 0 (Inauguración)</td>
-                        <td>Bravos</td>
-                        <td>8 - 5</td>
-                        <td>Azulejos</td>
+                        <td colspan="3" style="text-align: center; color: #777;">Aún no hay juegos registrados.</td>
                     </tr>
                 </tbody>
             </table>
@@ -248,21 +269,120 @@
 
     </div>
 
-    <!-- Script de Funcionalidad de Pestañas -->
     <script>
+        // Base de datos inicial de equipos en la liga
+        let equipos = {
+            "Cachorros": { jj: 0, jg: 0, jp: 0 },
+            "Diablos Rojos": { jj: 0, jg: 0, jp: 0 },
+            "Rieleros": { jj: 0, jg: 0, jp: 0 },
+            "Yankees": { jj: 0, jg: 0, jp: 0 }
+        };
+
+        let historialResultados = [];
+
         function switchTab(evt, tabName) {
-            // Ocultar todo el contenido de las pestañas
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(content => content.classList.remove('active'));
 
-            // Remover la clase active de todas las pestañas
             const tabs = document.querySelectorAll('.nav-tab');
             tabs.forEach(tab => tab.classList.remove('active'));
 
-            // Mostrar la pestaña actual y marcarla como activa
             document.getElementById(tabName).classList.add('active');
             evt.currentTarget.classList.add('active');
+
+            if(tabName === 'posiciones') {
+                actualizarTablaPosiciones();
+            }
         }
+
+        function registrarJuego() {
+            let local = document.getElementById('localTeam').value;
+            let visitante = document.getElementById('visitTeam').value;
+            let scoreLocal = parseInt(document.getElementById('localScore').value);
+            let scoreVisitante = parseInt(document.getElementById('visitScore').value);
+
+            if(local === visitante) {
+                alert("El equipo local y el visitante no pueden ser el mismo.");
+                return;
+            }
+
+            // Actualizar juegos jugados
+            equipos[local].jj++;
+            equipos[visitante].jj++;
+
+            // Determinar ganador y perdedor
+            if(scoreLocal > scoreVisitante) {
+                equipos[local].jg++;
+                equipos[visitante].jp++;
+            } else if(scoreVisitante > scoreLocal) {
+                equipos[visitante].jg++;
+                equipos[local].jp++;
+            } else {
+                alert("En el sóftbol regular usualmente no hay empates, pero si ocurrió, ajusta las carreras para definir un ganador.");
+                // Deshacer conteo si hay empate exacto para no falsear estadísticas
+                equipos[local].jj--;
+                equipos[visitante].jj--;
+                return;
+            }
+
+            // Agregar al historial
+            historialResultados.push({
+                local: local,
+                score: `${scoreLocal} - ${scoreVisitante}`,
+                visitante: visitante
+            });
+
+            actualizarTablaResultados();
+            actualizarTablaPosiciones();
+
+            alert("¡Resultado registrado con éxito! Revisa la pestaña de Posiciones.");
+            
+            // Limpiar inputs
+            document.getElementById('localScore').value = 0;
+            document.getElementById('visitScore').value = 0;
+        }
+
+        function actualizarTablaResultados() {
+            let tbody = document.getElementById('resultsTableBody');
+            tbody.innerHTML = "";
+
+            historialResultados.forEach(partido => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `<td>${partido.local}</td><td><strong>${partido.score}</strong></td><td>${partido.visitante}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function actualizarTablaPosiciones() {
+            let tbody = document.getElementById('standingsTableBody');
+            tbody.innerHTML = "";
+
+            // Convertir objeto a array para ordenar
+            let arrayEquipos = Object.keys(equipos).map(nombre => {
+                let e = equipos[nombre];
+                let pct = e.jj > 0 ? (e.jg / e.jj).toFixed(3) : ".000";
+                return { nombre, ...e, pct };
+            });
+
+            // Ordenar: Mayor cantidad de Juegos Ganados (JG), luego menor de Perdidos (JP)
+            arrayEquipos.sort((a, b) => b.jg - a.jg || a.jp - b.jp);
+
+            // Pintar en la tabla
+            arrayEquipos.forEach((eq, index) => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}. ${eq.nombre}</td>
+                    <td>${eq.jj}</td>
+                    <td>${eq.jg}</td>
+                    <td>${eq.jp}</td>
+                    <td>${eq.pct.replace('0.', '.')}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Cargar la tabla al iniciar
+        actualizarTablaPosiciones();
     </script>
 
 </body>
