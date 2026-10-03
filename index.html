@@ -9,7 +9,7 @@
             --primary-color: #6a1b29; /* Guinda deportivo */
             --secondary-color: #f8fafc;
             --accent-color: #000000;  /* Negro */
-            --highlight-color: #a93246; /* Guinda claro / Acento */
+            --highlight-color: #a93246; 
             --text-color: #1e293b;
         }
 
@@ -25,7 +25,7 @@
         }
 
         header {
-            background-color: var(--primary-color); /* Fondo totalmente guinda */
+            background-color: var(--primary-color);
             color: white;
             text-align: center;
             padding: 1.8rem 1rem;
@@ -123,24 +123,24 @@
 
         .form-group {
             flex: 1;
-            min-width: 150px;
+            min-width: 130px;
         }
 
         .form-group label {
             display: block;
-            font-size: 0.85rem;
-            margin-bottom: 5px;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
             font-weight: bold;
             color: #475569;
         }
 
         .form-group select, .form-group input {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             box-sizing: border-box;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         button.btn-action {
@@ -257,14 +257,18 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             white-space: nowrap;
         }
 
         th, td {
-            padding: 12px 14px;
-            text-align: left;
+            padding: 10px 10px;
+            text-align: center;
             border-bottom: 1px solid #e2e8f0;
+        }
+
+        th:nth-child(2), td:nth-child(2) {
+            text-align: left; /* Alinear nombres a la izquierda */
         }
 
         th {
@@ -300,12 +304,12 @@
 
         @media (max-width: 600px) {
             .nav-tab {
-                padding: 12px 8px;
-                font-size: 0.8rem;
+                padding: 12px 6px;
+                font-size: 0.75rem;
             }
             th, td {
-                padding: 8px 10px;
-                font-size: 0.8rem;
+                padding: 6px;
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -330,22 +334,20 @@
 
     <div class="container">
 
-        <!-- 1. POSICIONES -->
+        <!-- 1. POSICIONES (W, L, PCT, DIF, RACHA) -->
         <div id="posiciones" class="tab-content active">
             <h2>Tabla de Posiciones General</h2>
-            <p>Estadísticas generales actualizadas de la temporada.</p>
+            <p>Estadísticas generales actualizadas de la temporada[span_9](start_span)[span_9](end_span).</p>
             <div class="table-responsive">
                 <table>
                     <thead>
                         <tr>
                             <th>Equipo</th>
-                            <th>JJ</th>
-                            <th>JG</th>
-                            <th>JP</th>
+                            <th>W</th>
+                            <th>L</th>
                             <th>PCT</th>
-                            <th>CA</th>
-                            <th>CR</th>
                             <th>DIF</th>
+                            <th>RACHA</th>
                         </tr>
                     </thead>
                     <tbody id="standingsTableBody"></tbody>
@@ -353,7 +355,7 @@
             </div>
         </div>
 
-        <!-- 2. ROL DE JUEGOS PROGRAMADOS -->
+        <!-- 2. ROL DE JUEGOS -->
         <div id="rol" class="tab-content">
             <h2>Rol de Juegos Programados</h2>
             <p>Calendario oficial de partidos organizado por jornadas.</p>
@@ -380,10 +382,10 @@
             </div>
         </div>
 
-        <!-- 4. EQUIPOS Y ROSTERS -->
+        <!-- 4. EQUIPOS Y ROSTERS (Con POS, AVG, PA, AB, HIT, 2B, 3B, HR, RBI) -->
         <div id="equipos" class="tab-content">
             <h2>Equipos y Estadísticas de Jugadores</h2>
-            <p>Haz clic en cualquier equipo para desplegar su roster de jugadores y estadísticas de bateo/pitcheo.</p>
+            <p>Haz clic en cualquier equipo para desplegar su roster y estadísticas detalladas[span_10](start_span)[span_10](end_span).</p>
             <div id="teamsContainer"></div>
         </div>
 
@@ -402,7 +404,7 @@
             </div>
 
             <div class="admin-box">
-                <h3>Registrar Jugador y Estadísticas</h3>
+                <h3>Registrar Jugador y Estadísticas Avanzadas</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Seleccionar Equipo</label>
@@ -413,22 +415,44 @@
                         <input type="text" id="playerName" placeholder="Nombre y Apellido">
                     </div>
                     <div class="form-group">
-                        <label>Número (#)</label>
-                        <input type="number" id="playerNumber" placeholder="Ej. 23">
+                        <label>Posición (POS)</label>
+                        <input type="text" id="playerPos" placeholder="Ej. 3B, CF, C">
                     </div>
                 </div>
                 <div class="form-row">
+                    <div class="form-group">
+                        <label>Apariciones (PA)</label>
+                        <input type="number" id="playerPA" min="0" value="0" oninput="calcularAvg()">
+                    </div>
+                    <div class="form-group">
+                        <label>Turnos (AB)</label>
+                        <input type="number" id="playerAB" min="0" value="0" oninput="calcularAvg()">
+                    </div>
+                    <div class="form-group">
+                        <label>Hits (HIT)</label>
+                        <input type="number" id="playerHIT" min="0" value="0" oninput="calcularAvg()">
+                    </div>
+                    <div class="form-group">
+                        <label>AVG (Auto)</label>
+                        <input type="text" id="playerAVG" readonly value=".000" style="background:#e2e8f0; font-weight:bold;">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Dobles (2B)</label>
+                        <input type="number" id="player2B" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Triples (3B)</label>
+                        <input type="number" id="player3B" min="0" value="0">
+                    </div>
                     <div class="form-group">
                         <label>Home Runs (HR)</label>
                         <input type="number" id="playerHR" min="0" value="0">
                     </div>
                     <div class="form-group">
-                        <label>Carreras Producidas (CP)</label>
-                        <input type="number" id="playerCP" min="0" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Ponches (P)</label>
-                        <input type="number" id="playerPonches" min="0" value="0">
+                        <label>Carreras Producidas (RBI)</label>
+                        <input type="number" id="playerRBI" min="0" value="0">
                     </div>
                 </div>
                 <button class="btn-action" onclick="agregarJugador()">Añadir Jugador al Roster</button>
@@ -544,19 +568,18 @@
         };
 
         const EQUIPOS_LMP = {
-            "Tomateros de Culiacán": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
-            "Naranjeros de Hermosillo": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
-            "Venados de Mazatlán": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
-            "Charros de Jalisco": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
-            "Yaquis de Obregón": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
-            "Cañeros de Los Mochis": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
-            "Algodoneros de Guasave": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
-            "Mayos de Navojoa": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
-            "Águilas de Mexicali": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
-            "Sultanes de Monterrey": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] }
+            "Tomateros de Culiacán": { w: 0, l: 0, ca: 0, cr: 0, racha: "G1", jugadores: [] },
+            "Naranjeros de Hermosillo": { w: 0, l: 0, ca: 0, cr: 0, racha: "G1", jugadores: [] },
+            "Venados de Mazatlán": { w: 0, l: 0, ca: 0, cr: 0, racha: "P1", jugadores: [] },
+            "Charros de Jalisco": { w: 0, l: 0, ca: 0, cr: 0, racha: "P1", jugadores: [] },
+            "Yaquis de Obregón": { w: 0, l: 0, ca: 0, cr: 0, racha: "G1", jugadores: [] },
+            "Cañeros de Los Mochis": { w: 0, l: 0, ca: 0, cr: 0, racha: "P1", jugadores: [] },
+            "Algodoneros de Guasave": { w: 0, l: 0, ca: 0, cr: 0, racha: "G1", jugadores: [] },
+            "Mayos de Navojoa": { w: 0, l: 0, ca: 0, cr: 0, racha: "P1", jugadores: [] },
+            "Águilas de Mexicali": { w: 0, l: 0, ca: 0, cr: 0, racha: "G1", jugadores: [] },
+            "Sultanes de Monterrey": { w: 0, l: 0, ca: 0, cr: 0, racha: "P1", jugadores: [] }
         };
 
-        // Rol inicial por defecto arrancando el 15 de Octubre de 2026
         const ROL_INICIAL = [
             { jornada: "Jornada 1", fecha: "15 Oct 2026 - 16:00 hrs", campo: "Campo Villa Juárez 1", local: "Tomateros de Culiacán", visitante: "Naranjeros de Hermosillo" },
             { jornada: "Jornada 1", fecha: "15 Oct 2026 - 18:00 hrs", campo: "Campo Villa Juárez 1", local: "Venados de Mazatlán", visitante: "Charros de Jalisco" },
@@ -627,6 +650,20 @@
             alert("Sesión de administrador cerrada.");
         }
 
+        // Cálculo automático de AVG mientras se escribe
+        function calcularAvg() {
+            let ab = parseInt(document.getElementById('playerAB').value) || 0;
+            let hit = parseInt(document.getElementById('playerHIT').value) || 0;
+            let avgField = document.getElementById('playerAVG');
+            
+            if (ab > 0) {
+                let calc = (hit / ab).toFixed(3);
+                avgField.value = calc.startsWith('0') ? calc.replace('0', '') : calc;
+            } else {
+                avgField.value = ".000";
+            }
+        }
+
         // --- GESTIÓN DE EQUIPOS Y JUGADORES ---
         function agregarEquipo() {
             let input = document.getElementById('newTeamName');
@@ -634,7 +671,7 @@
             if(!nombre) { alert("Escribe un nombre válido."); return; }
             if(equipos[nombre]) { alert("El equipo ya existe."); return; }
 
-            equipos[nombre] = { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] };
+            equipos[nombre] = { w: 0, l: 0, ca: 0, cr: 0, racha: "—", jugadores: [] };
             guardarDatos();
             input.value = "";
             actualizarSelectsEquipos();
@@ -657,22 +694,32 @@
         function agregarJugador() {
             let equipo = document.getElementById('selectTeamForPlayer').value;
             let nombre = document.getElementById('playerName').value.trim();
-            let num = document.getElementById('playerNumber').value;
+            let pos = document.getElementById('playerPos').value.trim() || "UTIL";
+            let pa = parseInt(document.getElementById('playerPA').value) || 0;
+            let ab = parseInt(document.getElementById('playerAB').value) || 0;
+            let hit = parseInt(document.getElementById('playerHIT').value) || 0;
+            let avg = document.getElementById('playerAVG').value;
+            let b2 = parseInt(document.getElementById('player2B').value) || 0;
+            let b3 = parseInt(document.getElementById('player3B').value) || 0;
             let hr = parseInt(document.getElementById('playerHR').value) || 0;
-            let cp = parseInt(document.getElementById('playerCP').value) || 0;
-            let p = parseInt(document.getElementById('playerPonches').value) || 0;
+            let rbi = parseInt(document.getElementById('playerRBI').value) || 0;
 
             if(!nombre) { alert("Ingresa el nombre del jugador."); return; }
 
-            equipos[equipo].jugadores.push({ nombre, num: num || "S/N", hr, cp, p });
+            equipos[equipo].jugadores.push({ nombre, pos, pa, ab, hit, avg, b2, b3, hr, rbi });
             guardarDatos();
             
             document.getElementById('playerName').value = "";
-            document.getElementById('playerNumber').value = "";
+            document.getElementById('playerPos').value = "";
+            document.getElementById('playerPA').value = 0;
+            document.getElementById('playerAB').value = 0;
+            document.getElementById('playerHIT').value = 0;
+            document.getElementById('playerAVG').value = ".000";
+            document.getElementById('player2B').value = 0;
+            document.getElementById('player3B').value = 0;
             document.getElementById('playerHR').value = 0;
-            document.getElementById('playerCP').value = 0;
-            document.getElementById('playerPonches').value = 0;
-            alert(`Jugador añadido correctamente.`);
+            document.getElementById('playerRBI').value = 0;
+            alert(`Jugador añadido correctamente al roster.`);
         }
 
         // --- PROGRAMAR ROL DE JUEGOS ---
@@ -732,9 +779,9 @@
                     jHtml = "<p style='font-size:0.9rem; color:#64748b; margin:5px 0;'>Sin jugadores registrados.</p>";
                 } else {
                     jHtml = `<div class="table-responsive"><table>
-                        <thead><tr><th>#</th><th>Jugador</th><th>HR</th><th>CP</th><th>Ponches (P)</th></tr></thead><tbody>`;
+                        <thead><tr><th>POS</th><th>JUGADOR</th><th>AVG</th><th>PA</th><th>AB</th><th>HIT</th><th>2B</th><th>3B</th><th>HR</th><th>RBI</th></tr></thead><tbody>`;
                     eq.jugadores.forEach(j => {
-                        jHtml += `<tr><td><b>${j.num}</b></td><td>${j.nombre}</td><td>${j.hr}</td><td>${j.cp}</td><td>${j.p}</td></tr>`;
+                        jHtml += `<tr><td><b>${j.pos}</b></td><td style="text-align:left;">${j.nombre}</td><td><b>${j.avg}</b></td><td>${j.pa}</td><td>${j.ab}</td><td>${j.hit}</td><td>${j.b2}</td><td>${j.b3}</td><td>${j.hr}</td><td>${j.rbi}</td></tr>`;
                     });
                     jHtml += `</tbody></table></div>`;
                 }
@@ -745,7 +792,7 @@
                         <span>▼</span>
                     </div>
                     <div class="team-body">
-                        <strong>Roster y Estadísticas:</strong>
+                        <strong>Roster y Estadísticas de Bateo:</strong>
                         ${jHtml}
                     </div>
                 `;
@@ -797,27 +844,18 @@
 
             if(local === visitante) { alert("Los equipos deben ser diferentes."); return; }
 
-            equipos[local].jj++;
-            equipos[visitante].jj++;
-            equipos[local].ca += sLocal;
-            equipos[local].cr += sVisit;
-            equipos[visitante].ca += sVisit;
-            equipos[visitante].cr += sLocal;
-
             if(sLocal > sVisit) {
-                equipos[local].jg++;
-                equipos[visitante].jp++;
+                equipos[local].w++;
+                equipos[visitante].l++;
+                equipos[local].racha = equipos[local].racha.startsWith('G') ? 'G' + (parseInt(equipos[local].racha.substring(1))+1) : 'G1';
+                equipos[visitante].racha = equipos[visitante].racha.startsWith('P') ? 'P' + (parseInt(equipos[visitante].racha.substring(1))+1) : 'P1';
             } else if(sVisit > sLocal) {
-                equipos[visitante].jg++;
-                equipos[local].jp++;
+                equipos[visitante].w++;
+                equipos[local].l++;
+                equipos[visitante].racha = equipos[visitante].racha.startsWith('G') ? 'G' + (parseInt(equipos[visitante].racha.substring(1))+1) : 'G1';
+                equipos[local].racha = equipos[local].racha.startsWith('P') ? 'P' + (parseInt(equipos[local].racha.substring(1))+1) : 'P1';
             } else {
                 alert("Ajusta las carreras para definir un ganador.");
-                equipos[local].jj--;
-                equipos[visitante].jj--;
-                equipos[local].ca -= sLocal;
-                equipos[local].cr -= sVisit;
-                equipos[visitante].ca -= sVisit;
-                equipos[visitante].cr -= sLocal;
                 return;
             }
 
@@ -826,7 +864,7 @@
             actualizarTablaPosiciones();
             actualizarTablaResultados();
 
-            alert("Carreras anotadas exitosamente, favor de revisar la tabla de posiciones y verificar que esté correcto.");
+            alert("Marcador guardado y tabla de posiciones actualizada.");
             document.getElementById('localScore').value = 0;
             document.getElementById('visitScore').value = 0;
         }
@@ -851,25 +889,27 @@
 
             let arr = Object.keys(equipos).map(nombre => {
                 let e = equipos[nombre];
-                let pct = e.jj > 0 ? (e.jg / e.jj).toFixed(3) : ".000";
-                let dif = e.ca - e.cr;
-                return { nombre, ...e, pct, dif };
+                let jj = e.w + e.l;
+                let pct = jj > 0 ? (e.w / jj).toFixed(3).replace('0.', '.') : ".000";
+                return { nombre, ...e, jj, pct };
             });
 
-            arr.sort((a, b) => b.jg - a.jg || a.jp - b.jp || b.dif - a.dif);
+            // Ordenar por Juegos Ganados (W) descendente
+            arr.sort((a, b) => b.w - a.w || a.l - b.l);
+
+            // Calcular DIF respecto al líder (W líder - W equipo)
+            let leaderW = arr.length > 0 ? arr[0].w : 0;
 
             arr.forEach((eq, idx) => {
                 let tr = document.createElement('tr');
-                let difTxt = eq.dif > 0 ? `+${eq.dif}` : eq.dif;
+                let dif = (leaderW - eq.w).toFixed(1);
                 tr.innerHTML = `
-                    <td>${idx + 1}. ${eq.nombre}</td>
-                    <td>${eq.jj}</td>
-                    <td>${eq.jg}</td>
-                    <td>${eq.jp}</td>
-                    <td>${eq.pct.replace('0.', '.')}</td>
-                    <td>${eq.ca}</td>
-                    <td>${eq.cr}</td>
-                    <td><strong>${difTxt}</strong></td>
+                    <td style="text-align:left;"><b>${idx + 1} - ${eq.nombre}</b></td>
+                    <td><b>${eq.w}</b></td>
+                    <td>${eq.l}</td>
+                    <td>${eq.pct}</td>
+                    <td>${dif}</td>
+                    <td><b>${eq.racha}</b></td>
                 `;
                 tbody.appendChild(tr);
             });
