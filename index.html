@@ -51,7 +51,7 @@
         }
 
         .nav-tab {
-            padding: 15px 20px;
+            padding: 15px 18px;
             cursor: pointer;
             font-weight: bold;
             color: #666;
@@ -64,7 +64,8 @@
             border-bottom: 3px solid var(--accent-color);
         }
 
-        #tab-captura {
+        /* Pestañas protegidas ocultas por defecto */
+        .admin-only {
             display: none;
         }
 
@@ -72,7 +73,7 @@
             max-width: 1000px;
             margin: 20px auto;
             padding: 0 15px;
-            flex: 1; /* Empuja el footer hacia abajo */
+            flex: 1;
             width: 100%;
             box-sizing: border-box;
         }
@@ -139,10 +140,59 @@
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
+            margin-top: 5px;
         }
 
         button.btn-action:hover {
             opacity: 0.9;
+        }
+
+        button.btn-danger {
+            background-color: #dc2626;
+        }
+
+        /* Estilos para lista de equipos y jugadores */
+        .team-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .team-header {
+            padding: 12px 15px;
+            background: #e2e8f0;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .team-header:hover {
+            background: #cbd5e1;
+        }
+
+        .team-body {
+            padding: 15px;
+            display: none;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .team-body.open {
+            display: block;
+        }
+
+        ul.player-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        ul.player-list li {
+            padding: 4px 0;
+            font-size: 0.95rem;
         }
 
         .table-responsive {
@@ -172,7 +222,6 @@
             background-color: #f9f9f9;
         }
 
-        /* Pie de página profesional ubicado al fondo */
         footer {
             background-color: #112e25;
             color: #ccc;
@@ -198,7 +247,7 @@
         @media (max-width: 600px) {
             .nav-tab {
                 padding: 12px 10px;
-                font-size: 0.85rem;
+                font-size: 0.8rem;
             }
             th, td {
                 padding: 8px;
@@ -215,57 +264,17 @@
     </header>
 
     <div class="nav-tabs">
-        <div id="tab-captura" class="nav-tab" onclick="switchTab(event, 'captura')">⚡ Registrar Resultado</div>
         <div class="nav-tab active" onclick="switchTab(event, 'posiciones')">🏆 Posiciones</div>
-        <div class="nav-tab" onclick="switchTab(event, 'resultados')">⚾ Historial de Juegos</div>
+        <div class="nav-tab" onclick="switchTab(event, 'resultados')">⚾ Resultados</div>
+        <div class="nav-tab" onclick="switchTab(event, 'equipos')">👥 Equipos y Rosters</div>
+        <!-- Pestañas protegidas -->
+        <div id="tab-admin-eq" class="nav-tab admin-only" onclick="switchTab(event, 'admEquipos')">⚙️ Admin Equipos</div>
+        <div id="tab-captura" class="nav-tab admin-only" onclick="switchTab(event, 'captura')">⚡ Registrar Marcador</div>
     </div>
 
     <div class="container">
 
-        <!-- SECCIÓN 1: CAPTURAR RESULTADOS (Protegida) -->
-        <div id="captura" class="tab-content">
-            <h2>Capturar Marcador de Partido (Modo Administrador)</h2>
-            <p>Registra los marcadores oficiales. Los cambios se reflejarán en la tabla pública.</p>
-            
-            <div class="admin-box">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Equipo Local</label>
-                        <select id="localTeam">
-                            <option value="Cachorros">Cachorros</option>
-                            <option value="Diablos Rojos">Diablos Rojos</option>
-                            <option value="Rieleros">Rieleros</option>
-                            <option value="Yankees">Yankees</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Carreras Local</label>
-                        <input type="number" id="localScore" min="0" value="0">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Equipo Visitante</label>
-                        <select id="visitTeam">
-                            <option value="Rieleros">Rieleros</option>
-                            <option value="Cachorros">Cachorros</option>
-                            <option value="Diablos Rojos">Diablos Rojos</option>
-                            <option value="Yankees">Yankees</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Carreras Visitante</label>
-                        <input type="number" id="visitScore" min="0" value="0">
-                    </div>
-                </div>
-
-                <button class="btn-action" onclick="registrarJuego()">Guardar y Actualizar Tabla</button>
-                <button class="btn-action" style="background-color: #666; margin-top: 10px;" onclick="cerrarSesionAdmin()">Cerrar Sesión de Administrador</button>
-            </div>
-        </div>
-
-        <!-- SECCIÓN 2: TABLA DE POSICIONES -->
+        <!-- SECCIÓN 1: POSICIONES -->
         <div id="posiciones" class="tab-content active">
             <h2>Tabla de Posiciones General</h2>
             <p>Se actualiza de forma automática incluyendo carreras anotadas y recibidas.</p>
@@ -284,13 +293,13 @@
                         </tr>
                     </thead>
                     <tbody id="standingsTableBody">
-                        <!-- Generado por JavaScript -->
+                        <!-- Generado por JS -->
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- SECCIÓN 3: RESULTADOS -->
+        <!-- SECCIÓN 2: RESULTADOS -->
         <div id="resultados" class="tab-content">
             <h2>Historial de Resultados</h2>
             <p>Lista de partidos jugados en la temporada.</p>
@@ -312,9 +321,106 @@
             </div>
         </div>
 
+        <!-- SECCIÓN 3: EQUIPOS Y ROSTERS (Público) -->
+        <div id="equipos" class="tab-content">
+            <h2>Equipos Participantes y Jugadores</h2>
+            <p>Haz clic en el nombre de cualquier equipo para ver su lista de jugadores inscritos.</p>
+            <div id="teamsContainer">
+                <!-- Generado por JS -->
+            </div>
+        </div>
+
+        <!-- SECCIÓN 4: ADMINISTRAR EQUIPOS (Protegida) -->
+        <div id="admEquipos" class="tab-content">
+            <h2>Gestión de Equipos y Roster</h2>
+            <p>Agrega nuevos equipos a la liga o registra jugadores para cada plantilla.</p>
+            
+            <div class="admin-box">
+                <h3>Agregar Nuevo Equipo</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="newTeamName" placeholder="Nombre del equipo (Ej. Algodoneros)">
+                    </div>
+                    <button class="btn-action" style="max-width: 150px;" onclick="agregarEquipo()">Crear Equipo</button>
+                </div>
+            </div>
+
+            <div class="admin-box">
+                <h3>Agregar Jugador a un Equipo</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Seleccionar Equipo</label>
+                        <select id="selectTeamForPlayer">
+                            <!-- Llenado por JS -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre del Jugador</label>
+                        <input type="text" id="playerName" placeholder="Nombre y Apellido">
+                    </div>
+                    <div class="form-group">
+                        <label>Número (#)</label>
+                        <input type="number" id="playerNumber" placeholder="Ej. 23">
+                    </div>
+                </div>
+                <button class="btn-action" onclick="agregarJugador()">Añadir Jugador al Roster</button>
+            </div>
+
+            <div class="admin-box" style="border-color: #fca5a5;">
+                <h3 style="color: #dc2626;">Eliminar Equipo</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <select id="selectTeamToDelete">
+                            <!-- Llenado por JS -->
+                        </select>
+                    </div>
+                    <button class="btn-action btn-danger" style="max-width: 150px;" onclick="eliminarEquipo()">Eliminar Equipo</button>
+                </div>
+            </div>
+            
+            <button class="btn-action" style="background-color: #666;" onclick="cerrarSesionAdmin()">Cerrar Sesión de Administrador</button>
+        </div>
+
+        <!-- SECCIÓN 5: CAPTURAR RESULTADOS (Protegida) -->
+        <div id="captura" class="tab-content">
+            <h2>Capturar Marcador de Partido</h2>
+            <p>Registra los marcadores oficiales. Los cambios se reflejarán en la tabla pública.</p>
+            
+            <div class="admin-box">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Equipo Local</label>
+                        <select id="localTeam">
+                            <!-- Llenado por JS -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Carreras Local</label>
+                        <input type="number" id="localScore" min="0" value="0">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Equipo Visitante</label>
+                        <select id="visitTeam">
+                            <!-- Llenado por JS -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Carreras Visitante</label>
+                        <input type="number" id="visitScore" min="0" value="0">
+                    </div>
+                </div>
+
+                <button class="btn-action" onclick="registrarJuego()">Guardar y Actualizar Tabla</button>
+                <button class="btn-action" style="background-color: #666; margin-top: 10px;" onclick="cerrarSesionAdmin()">Cerrar Sesión de Administrador</button>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Pie de página con derechos reservados y acceso de administrador muy abajo -->
+    <!-- Pie de página con derechos reservados y acceso de administrador -->
     <footer>
         <div>| Derechos Reservados Tonny Macías Limón | Villa Juárez Navolato Sinaloa | 2026 |</div>
         <div class="admin-access-link">
@@ -323,17 +429,18 @@
     </footer>
 
     <script>
-        // Lista de usuarios y contraseñas permitidos (puedes cambiarlos o agregar más aquí)
+        // Cuentas de Administrador
         const ADMINS_PERMITIDOS = {
             "tonny": "softbol2026",
             "admin": "liga1234"
         };
 
+        // Base de datos de equipos, estadísticas y jugadores
         let equipos = {
-            "Cachorros": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0 },
-            "Diablos Rojos": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0 },
-            "Rieleros": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0 },
-            "Yankees": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0 }
+            "Cachorros": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [{nombre: "Carlos Pérez", num: 10}, {nombre: "Mario Soto", num: 22}] },
+            "Diablos Rojos": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [{nombre: "José Luis Valenzuela", num: 7}] },
+            "Rieleros": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
+            "Yankees": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] }
         };
 
         let historialResultados = [];
@@ -350,33 +457,159 @@
 
             if(tabName === 'posiciones') {
                 actualizarTablaPosiciones();
+            } else if(tabName === 'equipos') {
+                renderizarListaEquipos();
             }
         }
 
         function pedirCredenciales() {
             let usuarioIngresado = prompt("Ingresa tu usuario de administrador:");
-            if (usuarioIngresado === null) return; // Si cancela
+            if (usuarioIngresado === null) return;
 
             let passwordIngresado = prompt("Ingresa tu contraseña:");
-            if (passwordIngresado === null) return; // Si cancela
+            if (passwordIngresado === null) return;
 
-            // Validar si el usuario existe y la contraseña coincide
             if (ADMINS_PERMITIDOS[usuarioIngresado] && ADMINS_PERMITIDOS[usuarioIngresado] === passwordIngresado) {
-                // Mostrar pestaña de captura
+                // Mostrar pestañas exclusivas de administrador
+                document.getElementById('tab-admin-eq').style.display = 'block';
                 document.getElementById('tab-captura').style.display = 'block';
-                switchTab({ currentTarget: document.getElementById('tab-captura') }, 'captura');
-                alert(`¡Bienvenido, ${usuarioIngresado}! Acceso concedido.`);
+                switchTab({ currentTarget: document.getElementById('tab-admin-eq') }, 'admEquipos');
+                actualizarSelectsEquipos();
+                alert(`¡Bienvenido, ${usuarioIngresado}! Acceso de administrador concedido.`);
             } else {
                 alert("Usuario o contraseña incorrectos.");
             }
         }
 
         function cerrarSesionAdmin() {
+            document.getElementById('tab-admin-eq').style.display = 'none';
             document.getElementById('tab-captura').style.display = 'none';
-            switchTab({ currentTarget: document.querySelectorAll('.nav-tab')[1] }, 'posiciones');
+            switchTab({ currentTarget: document.querySelectorAll('.nav-tab')[0] }, 'posiciones');
             alert("Sesión de administrador cerrada correctamente.");
         }
 
+        // --- GESTIÓN DE EQUIPOS Y JUGADORES ---
+        function agregarEquipo() {
+            let nombreInput = document.getElementById('newTeamName');
+            let nombre = nombreInput.value.trim();
+
+            if(!nombre) {
+                alert("Escribe un nombre válido para el equipo.");
+                return;
+            }
+
+            if(equipos[nombre]) {
+                alert("Ese equipo ya existe en la liga.");
+                return;
+            }
+
+            equipos[nombre] = { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] };
+            nombreInput.value = "";
+            actualizarSelectsEquipos();
+            actualizarTablaPosiciones();
+            alert(`Equipo "${nombre}" agregado exitosamente.`);
+        }
+
+        function eliminarEquipo() {
+            let select = document.getElementById('selectTeamToDelete');
+            let nombre = select.value;
+
+            if(!nombre) return;
+
+            if(confirm(`¿Estás seguro de eliminar al equipo "${nombre}"? Se perderán sus datos de la temporada.`)) {
+                delete equipos[nombre];
+                actualizarSelectsEquipos();
+                actualizarTablaPosiciones();
+                alert("Equipo eliminado correctamente.");
+            }
+        }
+
+        function agregarJugador() {
+            let equipoSelect = document.getElementById('selectTeamForPlayer').value;
+            let nombreJugador = document.getElementById('playerName').value.trim();
+            let numeroJugador = document.getElementById('playerNumber').value;
+
+            if(!nombreJugador) {
+                alert("Ingresa el nombre del jugador.");
+                return;
+            }
+
+            equipos[equipoSelect].jugadores.push({
+                nombre: nombreJugador,
+                num: numeroJugador ? numeroJugador : "S/N"
+            });
+
+            document.getElementById('playerName').value = "";
+            document.getElementById('playerNumber').value = "";
+            alert(`Jugador agregado correctamente a ${equipoSelect}.`);
+        }
+
+        function actualizarSelectsEquipos() {
+            let selectLocal = document.getElementById('localTeam');
+            let selectVisit = document.getElementById('visitTeam');
+            let selectAddPlayer = document.getElementById('selectTeamForPlayer');
+            let selectDelete = document.getElementById('selectTeamToDelete');
+
+            let nombresEquipos = Object.keys(equipos);
+
+            let optionsHtml = "";
+            nombresEquipos.forEach(eq => {
+                optionsHtml += `<option value="${eq}">${eq}</option>`;
+            });
+
+            selectLocal.innerHTML = optionsHtml;
+            selectVisit.innerHTML = optionsHtml;
+            selectAddPlayer.innerHTML = optionsHtml;
+            selectDelete.innerHTML = optionsHtml;
+        }
+
+        function renderizarListaEquipos() {
+            let container = document.getElementById('teamsContainer');
+            container.innerHTML = "";
+
+            let nombresEquipos = Object.keys(equipos);
+
+            if(nombresEquipos.length === 0) {
+                container.innerHTML = "<p style='color: #777;'>No hay equipos registrados en la liga.</p>";
+                return;
+            }
+
+            nombresEquipos.forEach(nombre => {
+                let eq = equipos[nombre];
+                let card = document.createElement('div');
+                card.className = 'team-card';
+
+                let jugadoresHtml = "";
+                if(eq.jugadores.length === 0) {
+                    jugadoresHtml = "<p style='font-size:0.9rem; color:#777; margin:5px 0;'>No hay jugadores registrados todavía.</p>";
+                } else {
+                    jugadoresHtml = "<ul class='player-list'>";
+                    eq.jugadores.forEach(j => {
+                        jugadoresHtml += `<li><b>#${j.num}</b> - ${j.nombre}</li>`;
+                    });
+                    jugadoresHtml += "</ul>";
+                }
+
+                card.innerHTML = `
+                    <div class="team-header" onclick="toggleTeamBody(this)">
+                        <span>⚾ ${nombre} (${eq.jugadores.length} jugadores)</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="team-body">
+                        <strong>Roster de Jugadores:</strong>
+                        ${jugadoresHtml}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleTeamBody(headerElem) {
+            let body = headerElem.nextElementSibling;
+            body.classList.toggle('open');
+        }
+
+        // --- REGISTRO DE JUEGOS ---
         function registrarJuego() {
             let local = document.getElementById('localTeam').value;
             let visitante = document.getElementById('visitTeam').value;
@@ -470,6 +703,7 @@
             });
         }
 
+        // Cargar datos iniciales al abrir
         actualizarTablaPosiciones();
     </script>
 
