@@ -527,8 +527,8 @@
         }
 
         .billboard-item img {
-            height: 35px;
-            max-width: 120px;
+            height: 40px; /* Altura fija uniforme para evitar distorsión */
+            max-width: 150px;
             object-fit: contain;
             filter: brightness(0) invert(1);
         }
@@ -833,6 +833,7 @@
                 
                 <!-- Campos ocultos para edición -->
                 <input type="hidden" id="editSponsorIndex" value="-1">
+                <input type="hidden" id="inputSponsorLogo" value="">
 
                 <div class="form-row">
                     <div class="form-group">
@@ -840,8 +841,8 @@
                         <input type="text" id="inputSponsorName" placeholder="Ej. TJ Diseño y Publicidad">
                     </div>
                     <div class="form-group">
-                        <label>URL del Logo (Opcional)</label>
-                        <input type="text" id="inputSponsorLogo" placeholder="https://ejemplo.com/logo.png">
+                        <label>Subir Logotipo del Patrocinador <span style="color: var(--highlight-color); font-weight: normal;">(Ideal: 200 x 60 px)</span></label>
+                        <input type="file" id="inputFileLogo" accept="image/*" onchange="cargarImagenLocal(event)" style="padding: 7px; background: white;">
                     </div>
                 </div>
                 <div style="display: flex; gap: 10px; margin-bottom: 20px;">
@@ -1080,6 +1081,17 @@
             document.getElementById('flashText').innerText = avisoFlash;
         }
 
+        function cargarImagenLocal(event) {
+            let file = event.target.files[0];
+            if(file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('inputSponsorLogo').value = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
         function guardarPatrocinador() {
             let nombre = document.getElementById('inputSponsorName').value.trim();
             let logo = document.getElementById('inputSponsorLogo').value.trim();
@@ -1092,7 +1104,10 @@
                 patrocinadores.push({ nombre, logo });
                 alert("Patrocinador agregado exitosamente.");
             } else {
-                // Modificar existente
+                // Modificar existente (si no seleccionó nueva imagen, mantiene la anterior)
+                if(!logo) {
+                    logo = patrocinadores[editIndex].logo;
+                }
                 patrocinadores[editIndex] = { nombre, logo };
                 alert("Patrocinador actualizado correctamente.");
                 cancelarEdicionPatrocinador();
@@ -1103,6 +1118,7 @@
             renderizarTablaPatrocinadoresAdmin();
             document.getElementById('inputSponsorName').value = "";
             document.getElementById('inputSponsorLogo').value = "";
+            document.getElementById('inputFileLogo').value = "";
         }
 
         function editarPatrocinador(index) {
@@ -1117,6 +1133,7 @@
         function cancelarEdicionPatrocinador() {
             document.getElementById('inputSponsorName').value = "";
             document.getElementById('inputSponsorLogo').value = "";
+            document.getElementById('inputFileLogo').value = "";
             document.getElementById('editSponsorIndex').value = "-1";
             document.getElementById('btnCancelEdit').style.display = 'none';
         }
@@ -1142,10 +1159,11 @@
             }
             patrocinadores.forEach((pat, index) => {
                 let tr = document.createElement('tr');
+                let logoPreview = pat.logo ? `<img src="${pat.logo}" style="height:25px; vertical-align:middle; margin-left:8px; filter:none;">` : '';
                 tr.innerHTML = `
                     <td style="text-align:left;">
-                        <b>${pat.nombre}</b><br>
-                        <span style="font-size:0.75rem; color:#64748b;">${pat.logo ? 'Logo: ' + pat.logo : 'Sin logo (Texto)'}</span>
+                        <b>${pat.nombre}</b> ${logoPreview}<br>
+                        <span style="font-size:0.75rem; color:#64748b;">${pat.logo ? 'Con Logo Cargado' : 'Sin logo (Texto)'}</span>
                     </td>
                     <td>
                         <button class="btn-action btn-warning" style="padding: 6px 10px; margin:0 4px 0 0; font-size:0.8rem; display:inline-block; width:auto;" onclick="editarPatrocinador(${index})">Editar</button>
