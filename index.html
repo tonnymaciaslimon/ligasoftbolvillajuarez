@@ -62,7 +62,7 @@
         }
 
         .container {
-            max-width: 950px;
+            max-width: 1000px;
             margin: 20px auto;
             padding: 0 15px;
         }
@@ -86,7 +86,6 @@
             margin-top: 0;
         }
 
-        /* Formulario de captura */
         .admin-box {
             background: #fdfdfd;
             border: 1px solid #ddd;
@@ -136,15 +135,21 @@
             opacity: 0.9;
         }
 
+        /* Contenedor de tabla con scroll horizontal para celulares si hay muchas columnas */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            white-space: nowrap;
         }
 
         th, td {
-            padding: 12px;
+            padding: 10px 12px;
             text-align: left;
             border-bottom: 1px solid #eee;
         }
@@ -165,7 +170,7 @@
             }
             th, td {
                 padding: 8px;
-                font-size: 0.85rem;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -174,7 +179,7 @@
 
     <header>
         <h1>Liga Municipal de Sóftbol</h1>
-        <p>Control Automatizado de Posiciones y Resultados</p>
+        <p>Control Automatizado de Posiciones y Estadísticas</p>
     </header>
 
     <div class="nav-tabs">
@@ -230,52 +235,59 @@
         <!-- SECCIÓN 2: TABLA DE POSICIONES -->
         <div id="posiciones" class="tab-content">
             <h2>Tabla de Posiciones General</h2>
-            <p>Se actualiza de forma automática con base en los resultados ingresados.</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Equipo</th>
-                        <th>JJ</th>
-                        <th>JG</th>
-                        <th>JP</th>
-                        <th>PCT</th>
-                    </tr>
-                </thead>
-                <tbody id="standingsTableBody">
-                    <!-- Generado por JavaScript -->
-                </tbody>
-            </table>
+            <p>Se actualiza de forma automática incluyendo carreras anotadas y recibidas.</p>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Equipo</th>
+                            <th>JJ</th>
+                            <th>JG</th>
+                            <th>JP</th>
+                            <th>PCT</th>
+                            <th>CA</th>
+                            <th>CR</th>
+                            <th>DIF</th>
+                        </tr>
+                    </thead>
+                    <tbody id="standingsTableBody">
+                        <!-- Generado por JavaScript -->
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- SECCIÓN 3: RESULTADOS -->
         <div id="resultados" class="tab-content">
             <h2>Historial de Resultados</h2>
             <p>Lista de partidos jugados en la temporada.</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Local</th>
-                        <th>Score</th>
-                        <th>Visitante</th>
-                    </tr>
-                </thead>
-                <tbody id="resultsTableBody">
-                    <tr>
-                        <td colspan="3" style="text-align: center; color: #777;">Aún no hay juegos registrados.</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Local</th>
+                            <th>Score</th>
+                            <th>Visitante</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody">
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: #777;">Aún no hay juegos registrados.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
 
     <script>
-        // Base de datos inicial de equipos en la liga
+        // Base de datos de equipos: jj (juegos jugados), jg (ganados), jp (perdidos), ca (carreras anotadas), cr (carreras recibidas)
         let equipos = {
-            "Cachorros": { jj: 0, jg: 0, jp: 0 },
-            "Diablos Rojos": { jj: 0, jg: 0, jp: 0 },
-            "Rieleros": { jj: 0, jg: 0, jp: 0 },
-            "Yankees": { jj: 0, jg: 0, jp: 0 }
+            "Cachorros": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0 },
+            "Diablos Rojos": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0 },
+            "Rieleros": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0 },
+            "Yankees": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0 }
         };
 
         let historialResultados = [];
@@ -310,6 +322,13 @@
             equipos[local].jj++;
             equipos[visitante].jj++;
 
+            // Registrar carreras anotadas y recibidas
+            equipos[local].ca += scoreLocal;
+            equipos[local].cr += scoreVisitante;
+
+            equipos[visitante].ca += scoreVisitante;
+            equipos[visitante].cr += scoreLocal;
+
             // Determinar ganador y perdedor
             if(scoreLocal > scoreVisitante) {
                 equipos[local].jg++;
@@ -319,9 +338,13 @@
                 equipos[local].jp++;
             } else {
                 alert("En el sóftbol regular usualmente no hay empates, pero si ocurrió, ajusta las carreras para definir un ganador.");
-                // Deshacer conteo si hay empate exacto para no falsear estadísticas
+                // Revertir cambios si hay empate exacto
                 equipos[local].jj--;
                 equipos[visitante].jj--;
+                equipos[local].ca -= scoreLocal;
+                equipos[local].cr -= scoreVisitante;
+                equipos[visitante].ca -= scoreVisitante;
+                equipos[visitante].cr -= scoreLocal;
                 return;
             }
 
@@ -335,7 +358,8 @@
             actualizarTablaResultados();
             actualizarTablaPosiciones();
 
-            alert("¡Resultado registrado con éxito! Revisa la pestaña de Posiciones.");
+            // Mensaje personalizado solicitado
+            alert("Carreras anotadas exitosamente, favor de revisar la tabla de posiciones y verificar que esté correcto.");
             
             // Limpiar inputs
             document.getElementById('localScore').value = 0;
@@ -361,21 +385,26 @@
             let arrayEquipos = Object.keys(equipos).map(nombre => {
                 let e = equipos[nombre];
                 let pct = e.jj > 0 ? (e.jg / e.jj).toFixed(3) : ".000";
-                return { nombre, ...e, pct };
+                let dif = e.ca - e.cr; // Diferencia de carreras
+                return { nombre, ...e, pct, dif };
             });
 
-            // Ordenar: Mayor cantidad de Juegos Ganados (JG), luego menor de Perdidos (JP)
-            arrayEquipos.sort((a, b) => b.jg - a.jg || a.jp - b.jp);
+            // Ordenar: Mayor JG, menor JP, y mayor Diferencia de carreras (DIF) en caso de empate
+            arrayEquipos.sort((a, b) => b.jg - a.jg || a.jp - b.jp || b.dif - a.dif);
 
             // Pintar en la tabla
             arrayEquipos.forEach((eq, index) => {
                 let tr = document.createElement('tr');
+                let difTexto = eq.dif > 0 ? `+${eq.dif}` : eq.dif; // Agregar signo + si es positivo
                 tr.innerHTML = `
                     <td>${index + 1}. ${eq.nombre}</td>
                     <td>${eq.jj}</td>
                     <td>${eq.jg}</td>
                     <td>${eq.jp}</td>
                     <td>${eq.pct.replace('0.', '.')}</td>
+                    <td>${eq.ca}</td>
+                    <td>${eq.cr}</td>
+                    <td><strong>${difTexto}</strong></td>
                 `;
                 tbody.appendChild(tr);
             });
