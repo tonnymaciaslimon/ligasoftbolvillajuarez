@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rol de Juegos - Liga de Sóftbol</title>
+    <!-- Estilos de diseño -->
+    <style>
+        :root {
+            --primary-color: #1b4d3e; /* Verde diamante / sóftbol */
+            --secondary-color: #f4f6f8;
+            --accent-color: #d97706; /* Tono naranja/beisbolero */
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Menú de pestañas */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--accent-color);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+
+        /* Tablas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Responsive para celulares */
+        @media (max-width: 600px) {
+            .nav-tab {
+                padding: 12px 10px;
+                font-size: 0.85rem;
+            }
+            th, td {
+                padding: 8px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Liga Municipal de Sóftbol</h1>
+        <p>Temporada Oficial - Control de Rol y Estadísticas</p>
+    </header>
+
+    <!-- Pestañas de Navegación -->
+    <div class="nav-tabs">
+        <div class="nav-tab active" onclick="switchTab(event, 'rol')">📅 Rol de Juegos</div>
+        <div class="nav-tab" onclick="switchTab(event, 'posiciones')">🏆 Posiciones</div>
+        <div class="nav-tab" onclick="switchTab(event, 'resultados')">⚾ Resultados</div>
+    </div>
+
+    <div class="container">
+
+        <!-- SECCIÓN 1: ROL DE JUEGOS -->
+        <div id="rol" class="tab-content active">
+            <h2>Próximos Juegos (Jornada 1)</h2>
+            <p>Consulta los horarios, campos y equipos programados para esta semana.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha / Hora</th>
+                        <th>Campo</th>
+                        <th>Equipo Local</th>
+                        <th>Equipo Visitante</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sáb 10 Oct - 16:00 hrs</td>
+                        <td>Campo Municipal 1</td>
+                        <td>Diablos Rojos</td>
+                        <td>Rieleros</td>
+                    </tr>
+                    <tr>
+                        <td>Sáb 10 Oct - 18:00 hrs</td>
+                        <td>Campo Municipal 1</td>
+                        <td>Cachorros</td>
+                        <td>Yankees</td>
+                    </tr>
+                    <tr>
+                        <td>Dom 11 Oct - 10:00 hrs</td>
+                        <td>Campo Villa Juárez</td>
+                        <td>Bravos</td>
+                        <td>Azulejos</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SECCIÓN 2: TABLA DE POSICIONES -->
+        <div id="posiciones" class="tab-content">
+            <h2>Tabla de Posiciones</h2>
+            <p>Estadísticas generales de los equipos en el torneo.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Equipo</th>
+                        <th>JJ</th>
+                        <th>JG</th>
+                        <th>JP</th>
+                        <th>PCT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1. Cachorros</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>.000</td>
+                    </tr>
+                    <tr>
+                        <td>2. Diablos Rojos</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>.000</td>
+                    </tr>
+                    <tr>
+                        <td>3. Rieleros</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>.000</td>
+                    </tr>
+                    <tr>
+                        <td>4. Yankees</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>.000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SECCIÓN 3: RESULTADOS -->
+        <div id="resultados" class="tab-content">
+            <h2>Últimos Resultados</h2>
+            <p>Marcadores finales de la jornada anterior.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jornada</th>
+                        <th>Equipo Local</th>
+                        <th>Score</th>
+                        <th>Equipo Visitante</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Jornada 0 (Inauguración)</td>
+                        <td>Bravos</td>
+                        <td>8 - 5</td>
+                        <td>Azulejos</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Script de Funcionalidad de Pestañas -->
+    <script>
+        function switchTab(evt, tabName) {
+            // Ocultar todo el contenido de las pestañas
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Remover la clase active de todas las pestañas
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Mostrar la pestaña actual y marcarla como activa
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
