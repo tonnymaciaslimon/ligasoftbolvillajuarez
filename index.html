@@ -25,7 +25,7 @@
         }
 
         header {
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            background-color: var(--primary-color); /* Fondo totalmente guinda */
             color: white;
             text-align: center;
             padding: 1.8rem 1rem;
@@ -356,10 +356,8 @@
         <!-- 2. ROL DE JUEGOS PROGRAMADOS -->
         <div id="rol" class="tab-content">
             <h2>Rol de Juegos Programados</h2>
-            <p>Consulta los próximos enfrentamientos organizados por jornada.</p>
-            <div id="rolContainer">
-                <p style="color: #64748b;">No hay juegos programados por el momento.</p>
-            </div>
+            <p>Calendario oficial de partidos organizado por jornadas.</p>
+            <div id="rolContainer"></div>
         </div>
 
         <!-- 3. RESULTADOS -->
@@ -460,7 +458,7 @@
                     </div>
                     <div class="form-group">
                         <label>Fecha y Hora</label>
-                        <input type="text" id="rolFecha" placeholder="Sáb 15 Oct - 16:00 hrs">
+                        <input type="text" id="rolFecha" placeholder="15 Oct 2026 - 16:00 hrs">
                     </div>
                     <div class="form-group">
                         <label>Campo</label>
@@ -545,7 +543,6 @@
             "admin": "liga1234"
         };
 
-        // Equipos predeterminados de la Liga Mexicana del Pacífico (LMP)
         const EQUIPOS_LMP = {
             "Tomateros de Culiacán": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
             "Naranjeros de Hermosillo": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
@@ -559,10 +556,18 @@
             "Sultanes de Monterrey": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] }
         };
 
-        // Cargar desde localStorage o inicializar con los equipos LMP si no existen
+        // Rol inicial por defecto arrancando el 15 de Octubre de 2026
+        const ROL_INICIAL = [
+            { jornada: "Jornada 1", fecha: "15 Oct 2026 - 16:00 hrs", campo: "Campo Villa Juárez 1", local: "Tomateros de Culiacán", visitante: "Naranjeros de Hermosillo" },
+            { jornada: "Jornada 1", fecha: "15 Oct 2026 - 18:00 hrs", campo: "Campo Villa Juárez 1", local: "Venados de Mazatlán", visitante: "Charros de Jalisco" },
+            { jornada: "Jornada 1", fecha: "16 Oct 2026 - 16:00 hrs", campo: "Campo Municipal", local: "Yaquis de Obregón", visitante: "Cañeros de Los Mochis" },
+            { jornada: "Jornada 1", fecha: "16 Oct 2026 - 18:00 hrs", campo: "Campo Municipal", local: "Algodoneros de Guasave", visitante: "Mayos de Navojoa" },
+            { jornada: "Jornada 1", fecha: "17 Oct 2026 - 16:00 hrs", campo: "Campo Unidad Deportiva", local: "Águilas de Mexicali", visitante: "Sultanes de Monterrey" }
+        ];
+
         let equipos = JSON.parse(localStorage.getItem('softbol_equipos')) || EQUIPOS_LMP;
         let historialResultados = JSON.parse(localStorage.getItem('softbol_resultados')) || [];
-        let rolJuegos = JSON.parse(localStorage.getItem('softbol_rol')) || [];
+        let rolJuegos = JSON.parse(localStorage.getItem('softbol_rol')) || ROL_INICIAL;
 
         function guardarDatos() {
             localStorage.setItem('softbol_equipos', JSON.stringify(equipos));
@@ -693,6 +698,7 @@
             document.getElementById('rolJornada').value = "";
             document.getElementById('rolFecha').value = "";
             document.getElementById('rolCampo').value = "";
+            renderizarRolJuegos();
         }
 
         function actualizarSelectsEquipos() {
@@ -873,6 +879,7 @@
         actualizarTablaPosiciones();
         actualizarSelectsEquipos();
         renderizarRolJuegos();
+        actualizarTablaResultados();
     </script>
 
 </body>
