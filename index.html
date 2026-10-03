@@ -285,6 +285,89 @@
             display: block;
         }
 
+        /* Estilos de la Galería de Fotos y Pitcher Ganador */
+        .gallery-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .gallery-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 14px 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gallery-body {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .photo-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .photo-box h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .photo-container {
+            width: 100%;
+            height: 220px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pitcher-badge {
+            position: absolute;
+            bottom: 10px;
+            background: rgba(15, 23, 42, 0.85);
+            color: #fef3c7;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            border: 1px solid var(--highlight-color);
+        }
+
         .table-responsive {
             overflow-x: auto;
         }
@@ -376,10 +459,12 @@
         <div class="nav-tab" onclick="switchTab(event, 'rol')">📅 Rol de Juegos</div>
         <div class="nav-tab" onclick="switchTab(event, 'resultados')">⚾ Resultados</div>
         <div class="nav-tab" onclick="switchTab(event, 'equipos')">👥 Equipos y Roster</div>
+        <div class="nav-tab" onclick="switchTab(event, 'galeria')">📸 Galería</div>
         <!-- Pestañas protegidas -->
         <div id="tab-admin-eq" class="nav-tab admin-only" onclick="switchTab(event, 'admEquipos')">⚙️ Admin Equipos</div>
         <div id="tab-rol-admin" class="nav-tab admin-only" onclick="switchTab(event, 'admRol')">🗓️ Admin Rol</div>
         <div id="tab-captura" class="nav-tab admin-only" onclick="switchTab(event, 'captura')">⚡ Registrar Marcador</div>
+        <div id="tab-galeria-admin" class="nav-tab admin-only" onclick="switchTab(event, 'admGaleria')">📷 Admin Galería</div>
     </div>
 
     <div class="container">
@@ -439,7 +524,14 @@
             <div id="teamsContainer"></div>
         </div>
 
-        <!-- 5. ADMIN: GESTIÓN DE EQUIPOS Y JUGADORES -->
+        <!-- 5. GALERÍA DE FOTOS Y PITCHER GANADOR -->
+        <div id="galeria" class="tab-content">
+            <h2>Galería de Encuentros y Pitchers Ganadores</h2>
+            <p>Momentos destacados de los partidos y reconocimiento especial a los lanzadores victoriosos.</p>
+            <div id="galleryContainer"></div>
+        </div>
+
+        <!-- 6. ADMIN: GESTIÓN DE EQUIPOS Y JUGADORES -->
         <div id="admEquipos" class="tab-content">
             <h2>Administración de Equipos y Jugadores</h2>
             
@@ -521,7 +613,7 @@
             <button class="btn-action" style="background-color: #475569;" onclick="cerrarSesionAdmin()">Cerrar Sesión de Administrador</button>
         </div>
 
-        <!-- 6. ADMIN: PROGRAMAR ROL DE JUEGOS -->
+        <!-- 7. ADMIN: PROGRAMAR ROL DE JUEGOS -->
         <div id="admRol" class="tab-content">
             <h2>Programar Rol de Juegos por Jornada</h2>
             <div class="admin-box">
@@ -554,7 +646,7 @@
             <button class="btn-action" style="background-color: #475569;" onclick="cerrarSesionAdmin()">Cerrar Sesión de Administrador</button>
         </div>
 
-        <!-- 7. ADMIN: REGISTRAR MARCADOR -->
+        <!-- 8. ADMIN: REGISTRAR MARCADOR -->
         <div id="captura" class="tab-content">
             <h2>Registrar Marcador Oficial</h2>
             <div class="admin-box">
@@ -579,6 +671,37 @@
                     </div>
                 </div>
                 <button class="btn-action" onclick="registrarJuego()">Guardar y Actualizar Tabla</button>
+            </div>
+            <button class="btn-action" style="background-color: #475569;" onclick="cerrarSesionAdmin()">Cerrar Sesión de Administrador</button>
+        </div>
+
+        <!-- 9. ADMIN: SUBIR FOTOS Y PITCHER GANADOR -->
+        <div id="admGaleria" class="tab-content">
+            <h2>Subir Fotos del Encuentro y Pitcher Ganador</h2>
+            <div class="admin-box">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Partido / Descripción</label>
+                        <input type="text" id="galeriaPartido" placeholder="Ej. Tomateros vs Naranjeros (Jornada 1)">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Foto del Encuentro (URL o Enlace de Imagen)</label>
+                        <input type="text" id="galeriaFotoJuego" placeholder="https://ejemplo.com/foto_partido.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label>Foto del Pitcher Ganador (URL o Enlace)</label>
+                        <input type="text" id="galeriaFotoPitcher" placeholder="https://ejemplo.com/pitcher.jpg">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombre del Pitcher Ganador</label>
+                        <input type="text" id="galeriaNombrePitcher" placeholder="Ej. Carlos Rodríguez">
+                    </div>
+                </div>
+                <button class="btn-action" onclick="agregarGaleriaItem()">Publicar en la Galería</button>
             </div>
             <button class="btn-action" style="background-color: #475569;" onclick="cerrarSesionAdmin()">Cerrar Sesión de Administrador</button>
         </div>
@@ -649,20 +772,26 @@
 
         const ROL_INICIAL = [
             { jornada: "Jornada 1", fecha: "15 Oct 2026 - 16:00 hrs", campo: "Campo Villa Juárez 1", local: "Tomateros de Culiacán", visitante: "Naranjeros de Hermosillo" },
-            { jornada: "Jornada 1", fecha: "15 Oct 2026 - 18:00 hrs", campo: "Campo Villa Juárez 1", local: "Venados de Mazatlán", visitante: "Charros de Jalisco" },
-            { jornada: "Jornada 1", fecha: "16 Oct 2026 - 16:00 hrs", campo: "Campo Municipal", local: "Yaquis de Obregón", visitante: "Cañeros de Los Mochis" },
-            { jornada: "Jornada 1", fecha: "16 Oct 2026 - 18:00 hrs", campo: "Campo Municipal", local: "Algodoneros de Guasave", visitante: "Mayos de Navojoa" },
-            { jornada: "Jornada 1", fecha: "17 Oct 2026 - 16:00 hrs", campo: "Campo Unidad Deportiva", local: "Águilas de Mexicali", visitante: "Sultanes de Monterrey" }
+            { jornada: "Jornada 1", fecha: "15 Oct 2026 - 18:00 hrs", campo: "Campo Villa Juárez 1", local: "Venados de Mazatlán", visitante: "Charros de Jalisco" }
         ];
 
         let equipos = JSON.parse(localStorage.getItem('softbol_equipos')) || EQUIPOS_LMP;
         let historialResultados = JSON.parse(localStorage.getItem('softbol_resultados')) || [];
         let rolJuegos = JSON.parse(localStorage.getItem('softbol_rol')) || ROL_INICIAL;
+        let galeriaJuegos = JSON.parse(localStorage.getItem('softbol_galeria')) || [
+            {
+                partido: "Tomateros de Culiacán vs Naranjeros de Hermosillo",
+                fotoJuego: "https://images.unsplash.com/photo-1593341646782-e0b495cff86d?auto=format&fit=crop&w=600&q=80",
+                fotoPitcher: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80",
+                pitcherNombre: "Carlos 'Zurdo' Rodríguez"
+            }
+        ];
 
         function guardarDatos() {
             localStorage.setItem('softbol_equipos', JSON.stringify(equipos));
             localStorage.setItem('softbol_resultados', JSON.stringify(historialResultados));
             localStorage.setItem('softbol_rol', JSON.stringify(rolJuegos));
+            localStorage.setItem('softbol_galeria', JSON.stringify(galeriaJuegos));
         }
 
         function switchTab(evt, tabName) {
@@ -679,6 +808,7 @@
             else if(tabName === 'equipos') renderizarListaEquipos();
             else if(tabName === 'resultados') actualizarTablaResultados();
             else if(tabName === 'rol') renderizarRolJuegos();
+            else if(tabName === 'galeria') renderizarGaleria();
         }
 
         function abrirModalLogin() {
@@ -701,9 +831,10 @@
                 document.getElementById('tab-admin-eq').style.display = 'block';
                 document.getElementById('tab-rol-admin').style.display = 'block';
                 document.getElementById('tab-captura').style.display = 'block';
+                document.getElementById('tab-galeria-admin').style.display = 'block';
                 switchTab({ currentTarget: document.getElementById('tab-admin-eq') }, 'admEquipos');
                 actualizarSelectsEquipos();
-                alert(`¡Bienvenido, ${u}! Acceso concedido.`);
+                alert(`¡Bienvenido, ${u}! Acceso de administrador concedido.`);
             } else {
                 alert("Usuario o contraseña incorrectos.");
             }
@@ -713,6 +844,7 @@
             document.getElementById('tab-admin-eq').style.display = 'none';
             document.getElementById('tab-rol-admin').style.display = 'none';
             document.getElementById('tab-captura').style.display = 'none';
+            document.getElementById('tab-galeria-admin').style.display = 'none';
             switchTab({ currentTarget: document.querySelectorAll('.nav-tab')[0] }, 'posiciones');
             alert("Sesión de administrador cerrada.");
         }
@@ -812,6 +944,34 @@
             renderizarRolJuegos();
         }
 
+        function agregarGaleriaItem() {
+            let partido = document.getElementById('galeriaPartido').value.trim();
+            let fotoJuego = document.getElementById('galeriaFotoJuego').value.trim();
+            let fotoPitcher = document.getElementById('galeriaFotoPitcher').value.trim();
+            let pitcherNombre = document.getElementById('galeriaNombrePitcher').value.trim();
+
+            if(!partido) {
+                alert("Por favor ingresa la descripción o nombre del partido.");
+                return;
+            }
+
+            galeriaJuegos.unshift({
+                partido,
+                fotoJuego: fotoJuego || "https://images.unsplash.com/photo-1593341646782-e0b495cff86d?auto=format&fit=crop&w=600&q=80",
+                fotoPitcher: fotoPitcher || "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80",
+                pitcherNombre: pitcherNombre || "Pitcher Destacado"
+            });
+
+            guardarDatos();
+            alert("¡Fotos publicadas exitosamente en la galería!");
+            
+            document.getElementById('galeriaPartido').value = "";
+            document.getElementById('galeriaFotoJuego').value = "";
+            document.getElementById('galeriaFotoPitcher').value = "";
+            document.getElementById('galeriaNombrePitcher').value = "";
+            renderizarGaleria();
+        }
+
         function actualizarSelectsEquipos() {
             let nombres = Object.keys(equipos);
             let opts = "";
@@ -901,6 +1061,42 @@
                 box.innerHTML = html;
                 container.appendChild(box);
             }
+        }
+
+        function renderizarGaleria() {
+            let container = document.getElementById('galleryContainer');
+            container.innerHTML = "";
+
+            if(galeriaJuegos.length === 0) {
+                container.innerHTML = "<p style='color: #64748b;'>No hay fotos publicadas en la galería todavía.</p>";
+                return;
+            }
+
+            galeriaJuegos.forEach(item => {
+                let card = document.createElement('div');
+                card.className = 'gallery-card';
+                card.innerHTML = `
+                    <div class="gallery-header">
+                        <span>⚾ ${item.partido}</span>
+                    </div>
+                    <div class="gallery-body">
+                        <div class="photo-box">
+                            <h4>📸 Del Encuentro</h4>
+                            <div class="photo-container">
+                                <img src="${item.fotoJuego}" alt="Foto del encuentro" onerror="this.src='https://images.unsplash.com/photo-1593341646782-e0b495cff86d?auto=format&fit=crop&w=600&q=80'">
+                            </div>
+                        </div>
+                        <div class="photo-box">
+                            <h4>⭐ Pitcher Ganador</h4>
+                            <div class="photo-container">
+                                <img src="${item.fotoPitcher}" alt="Pitcher ganador" onerror="this.src='https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80'">
+                                <div class="pitcher-badge">🏆 ⚾ ${item.pitcherNombre}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
 
         function registrarJuego() {
@@ -997,6 +1193,7 @@
         actualizarSelectsEquipos();
         renderizarRolJuegos();
         actualizarTablaResultados();
+        renderizarGaleria();
     </script>
 
 </body>
