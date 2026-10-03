@@ -6,10 +6,10 @@
     <title>Liga de Sóftbol Villa Juárez</title>
     <style>
         :root {
-            --primary-color: #0f172a; /* Azul marino deportivo muy elegante */
-            --secondary-color: #f1f5f9;
-            --accent-color: #2563eb;  /* Azul rey vibrante */
-            --highlight-color: #f59e0b; /* Naranja/Dorado deportivo */
+            --primary-color: #6a1b29; /* Guinda deportivo */
+            --secondary-color: #f8fafc;
+            --accent-color: #000000;  /* Negro */
+            --highlight-color: #a93246; /* Guinda claro / Acento */
             --text-color: #1e293b;
         }
 
@@ -50,21 +50,22 @@
             background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             flex-wrap: wrap;
+            border-bottom: 2px solid #e2e8f0;
         }
 
         .nav-tab {
             padding: 15px 16px;
             cursor: pointer;
             font-weight: bold;
-            color: #64748b;
+            color: #475569;
             border-bottom: 3px solid transparent;
             transition: all 0.3s ease;
             font-size: 0.95rem;
         }
 
         .nav-tab.active {
-            color: var(--accent-color);
-            border-bottom: 3px solid var(--highlight-color);
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
         }
 
         .admin-only {
@@ -101,7 +102,7 @@
         }
 
         h3 {
-            color: var(--accent-color);
+            color: var(--primary-color);
             margin-top: 20px;
         }
 
@@ -143,8 +144,8 @@
         }
 
         button.btn-action {
-            background-color: var(--highlight-color);
-            color: #1e293b;
+            background-color: var(--primary-color);
+            color: white;
             border: none;
             padding: 12px 20px;
             font-weight: bold;
@@ -215,7 +216,7 @@
         .team-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            border-left: 5px solid var(--accent-color);
+            border-left: 5px solid var(--primary-color);
             border-radius: 6px;
             margin-bottom: 12px;
             overflow: hidden;
@@ -276,13 +277,13 @@
         }
 
         footer {
-            background-color: var(--primary-color);
+            background-color: var(--accent-color);
             color: #94a3b8;
             text-align: center;
             padding: 25px 15px;
             font-size: 0.85rem;
             margin-top: 40px;
-            border-top: 4px solid var(--highlight-color);
+            border-top: 4px solid var(--primary-color);
         }
 
         footer .admin-access-link {
@@ -291,7 +292,7 @@
         }
 
         footer .admin-access-link span {
-            color: var(--highlight-color);
+            color: #ffffff;
             cursor: pointer;
             text-decoration: underline;
             font-weight: bold;
@@ -381,7 +382,7 @@
             </div>
         </div>
 
-        <!-- 4. EQUIPOS Y ROSTERS (Con HR, CP y Ponches) -->
+        <!-- 4. EQUIPOS Y ROSTERS -->
         <div id="equipos" class="tab-content">
             <h2>Equipos y Estadísticas de Jugadores</h2>
             <p>Haz clic en cualquier equipo para desplegar su roster de jugadores y estadísticas de bateo/pitcheo.</p>
@@ -396,7 +397,7 @@
                 <h3>Agregar Nuevo Equipo</h3>
                 <div class="form-row">
                     <div class="form-group">
-                        <input type="text" id="newTeamName" placeholder="Nombre del equipo (Ej. Diablos)">
+                        <input type="text" id="newTeamName" placeholder="Nombre del equipo">
                     </div>
                     <button class="btn-action" style="max-width: 160px;" onclick="agregarEquipo()">Crear Equipo</button>
                 </div>
@@ -544,11 +545,22 @@
             "admin": "liga1234"
         };
 
-        let equipos = JSON.parse(localStorage.getItem('softbol_equipos')) || {
-            "Cachorros": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [{nombre: "Carlos Pérez", num: 10, hr: 2, cp: 5, p: 1}] },
-            "Diablos Rojos": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] }
+        // Equipos predeterminados de la Liga Mexicana del Pacífico (LMP)
+        const EQUIPOS_LMP = {
+            "Tomateros de Culiacán": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
+            "Naranjeros de Hermosillo": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
+            "Venados de Mazatlán": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
+            "Charros de Jalisco": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
+            "Yaquis de Obregón": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
+            "Cañeros de Los Mochis": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
+            "Algodoneros de Guasave": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
+            "Mayos de Navojoa": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
+            "Águilas de Mexicali": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] },
+            "Sultanes de Monterrey": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0, jugadores: [] }
         };
 
+        // Cargar desde localStorage o inicializar con los equipos LMP si no existen
+        let equipos = JSON.parse(localStorage.getItem('softbol_equipos')) || EQUIPOS_LMP;
         let historialResultados = JSON.parse(localStorage.getItem('softbol_resultados')) || [];
         let rolJuegos = JSON.parse(localStorage.getItem('softbol_rol')) || [];
 
@@ -748,7 +760,6 @@
                 return;
             }
 
-            // Agrupar por jornada
             let jornadasMap = {};
             rolJuegos.forEach(j => {
                 if(!jornadasMap[j.jornada]) jornadasMap[j.jornada] = [];
