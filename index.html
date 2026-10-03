@@ -1010,6 +1010,7 @@
             else if(tabName === 'resultados') actualizarTablaResultados();
             else if(tabName === 'rol') renderizarRolJuegos();
             else if(tabName === 'galeria') renderizarGaleria();
+            else if(tabName === 'admGaleria') renderizarTablaPatrocinadoresAdmin();
         }
 
         function abrirModalLogin() {
@@ -1092,6 +1093,7 @@
 
         function renderizarTablaPatrocinadoresAdmin() {
             let tbody = document.getElementById('adminSponsorsTableBody');
+            if(!tbody) return;
             tbody.innerHTML = "";
             if(patrocinadores.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="2" style="color: #64748b;">No hay patrocinadores registrados.</td></tr>`;
@@ -1109,6 +1111,7 @@
 
         function renderizarBillboard() {
             let track = document.getElementById('billboardTrack');
+            if(!track) return;
             let html = "";
             let items = [...patrocinadores, ...patrocinadores];
 
@@ -1265,6 +1268,7 @@
 
         function renderizarListaEquipos() {
             let container = document.getElementById('teamsContainer');
+            if(!container) return;
             container.innerHTML = "";
             let nombres = Object.keys(equipos);
 
@@ -1311,6 +1315,7 @@
 
         function renderizarLideresIndividuales() {
             let container = document.getElementById('leadersGridContainer');
+            if(!container) return;
             container.innerHTML = "";
 
             let todosJugadores = [];
@@ -1361,6 +1366,7 @@
 
         function renderizarRolJuegos() {
             let container = document.getElementById('rolContainer');
+            if(!container) return;
             container.innerHTML = "";
 
             if(rolJuegos.length === 0) {
@@ -1395,6 +1401,7 @@
 
         function renderizarGaleria() {
             let container = document.getElementById('galleryContainer');
+            if(!container) return;
             container.innerHTML = "";
 
             if(galeriaJuegos.length === 0) {
@@ -1470,6 +1477,7 @@
 
         function actualizarTablaResultados() {
             let tbody = document.getElementById('resultsTableBody');
+            if(!tbody) return;
             tbody.innerHTML = "";
             if(historialResultados.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #64748b;">Aún no hay juegos registrados.</td></tr>`;
@@ -1486,6 +1494,7 @@
 
         function actualizarTablaPosiciones() {
             let tbody = document.getElementById('standingsTableBody');
+            if(!tbody) return;
             tbody.innerHTML = "";
 
             let arr = Object.keys(equipos).map(nombre => {
@@ -1524,7 +1533,7 @@
             });
         }
 
-        // Inicializar
+        // Inicializar elementos de la interfaz al cargar la página
         renderizarAvisoFlash();
         actualizarTablaPosiciones();
         actualizarSelectsEquipos();
@@ -1533,6 +1542,7 @@
         renderizarGaleria();
         renderizarLideresIndividuales();
         renderizarBillboard();
+        renderizarTablaPatrocinadoresAdmin();
     </script>
 
 </body>
