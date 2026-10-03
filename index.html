@@ -269,11 +269,6 @@
             margin-bottom: 14px;
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-            transition: box-shadow 0.2s;
-        }
-
-        .team-card:hover {
-            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
         }
 
         .team-header {
@@ -492,7 +487,7 @@
             border-left: 4px solid var(--highlight-color);
         }
 
-        /* --- VALLA PUBLICITARIA DESLIZANTE DE PATROCINADORES (ESTILO ESTADIO) --- */
+        /* --- VALLA PUBLICITARIA DESLIZANTE DE PATROCINADORES --- */
         .stadium-billboard {
             background: #0f172a;
             border-top: 3px solid var(--primary-color);
@@ -528,7 +523,7 @@
             height: 35px;
             max-width: 120px;
             object-fit: contain;
-            filter: brightness(0) invert(1); /* Logotipos blancos elegantes sobre fondo oscuro */
+            filter: brightness(0) invert(1);
         }
 
         @keyframes slideBillboard {
@@ -594,7 +589,7 @@
         <div id="tab-admin-eq" class="nav-tab admin-only" onclick="switchTab(event, 'admEquipos')">⚙️ Admin Equipos</div>
         <div id="tab-rol-admin" class="nav-tab admin-only" onclick="switchTab(event, 'admRol')">🗓️ Admin Rol</div>
         <div id="tab-captura" class="nav-tab admin-only" onclick="switchTab(event, 'captura')">⚡ Registrar Marcador</div>
-        <div id="tab-galeria-admin" class="nav-tab admin-only" onclick="switchTab(event, 'admGaleria')">📷 Admin Galería y Patrocinadores</div>
+        <div id="tab-galeria-admin" class="nav-tab admin-only" onclick="switchTab(event, 'admGaleria')">📷 Admin General</div>
     </div>
 
     <div class="container">
@@ -812,9 +807,9 @@
             <button class="btn-action" style="background-color: #475569;" onclick="cerrarSesionAdmin()">Cerrar Sesión de Administrador</button>
         </div>
 
-        <!-- 10. ADMIN: SUBIR FOTOS, PITCHER, MVP, AVISOS Y PATROCINADORES -->
+        <!-- 10. ADMIN: PANEL GENERAL, GALERÍA Y PATROCINADORES -->
         <div id="admGaleria" class="tab-content">
-            <h2>Administrar Galería, MVP, Avisos y Patrocinadores</h2>
+            <h2>Panel de Administración General</h2>
             
             <div class="admin-box" style="border-color: #fcd34d; background: #fffbeb;">
                 <h3 style="color: #b45309;">Actualizar Aviso Flash / Noticias</h3>
@@ -827,18 +822,31 @@
             </div>
 
             <div class="admin-box" style="border-color: #cbd5e1; background: #f8fafc;">
-                <h3 style="color: var(--primary-color);">Agregar Patrocinador a la Valla</h3>
+                <h3 style="color: var(--primary-color);">Gestión de Patrocinadores (Valla Publicitaria)</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Nombre del Patrocinador</label>
                         <input type="text" id="inputSponsorName" placeholder="Ej. TJ Diseño y Publicidad">
                     </div>
                     <div class="form-group">
-                        <label>URL del Logo o Imagen (Opcional)</label>
+                        <label>URL del Logo (Opcional)</label>
                         <input type="text" id="inputSponsorLogo" placeholder="https://ejemplo.com/logo.png">
                     </div>
                 </div>
-                <button class="btn-action" style="max-width: 220px;" onclick="agregarPatrocinador()">Añadir Patrocinador</button>
+                <button class="btn-action" style="max-width: 220px; margin-bottom: 20px;" onclick="agregarPatrocinador()">Agregar Patrocinador</button>
+                
+                <h4>Patrocinadores Registrados:</h4>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Patrocinador</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminSponsorsTableBody"></tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="admin-box">
@@ -882,11 +890,9 @@
 
     </div>
 
-    <!-- VALLA PUBLICITARIA DESLIZANTE DE PATROCINADORES (ESTILO ESTADIO) -->
+    <!-- VALLA PUBLICITARIA DESLIZANTE DE PATROCINADORES -->
     <div class="stadium-billboard">
-        <div class="billboard-track" id="billboardTrack">
-            <!-- Los patrocinadores se cargan dinámicamente -->
-        </div>
+        <div class="billboard-track" id="billboardTrack"></div>
     </div>
 
     <!-- Modal de Login -->
@@ -965,8 +971,7 @@
             { nombre: "TJ Diseño y Publicidad", logo: "" },
             { nombre: "Graficos Integrales", logo: "" },
             { nombre: "BanCoppel", logo: "" },
-            { nombre: "Spin by OXXO", logo: "" },
-            { nombre: "Liga de Sóftbol Villa Juárez", logo: "" }
+            { nombre: "Spin by OXXO", logo: "" }
         ];
 
         let galeriaJuegos = JSON.parse(localStorage.getItem('softbol_galeria')) || [
@@ -1031,6 +1036,7 @@
                 switchTab({ currentTarget: document.getElementById('tab-admin-eq') }, 'admEquipos');
                 actualizarSelectsEquipos();
                 document.getElementById('inputFlashText').value = avisoFlash;
+                renderizarTablaPatrocinadoresAdmin();
                 alert(`¡Bienvenido, ${u}! Acceso de administrador concedido.`);
             } else {
                 alert("Usuario o contraseña incorrectos.");
@@ -1068,16 +1074,42 @@
             patrocinadores.push({ nombre, logo });
             guardarDatos();
             renderizarBillboard();
+            renderizarTablaPatrocinadoresAdmin();
             document.getElementById('inputSponsorName').value = "";
             document.getElementById('inputSponsorLogo').value = "";
-            alert("Patrocinador agregado a la valla publicitaria.");
+            alert("Patrocinador agregado exitosamente.");
+        }
+
+        function eliminarPatrocinador(index) {
+            if(confirm(`¿Eliminar al patrocinador "${patrocinadores[index].nombre}"?`)) {
+                patrocinadores.splice(index, 1);
+                guardarDatos();
+                renderizarBillboard();
+                renderizarTablaPatrocinadoresAdmin();
+                alert("Patrocinador eliminado.");
+            }
+        }
+
+        function renderizarTablaPatrocinadoresAdmin() {
+            let tbody = document.getElementById('adminSponsorsTableBody');
+            tbody.innerHTML = "";
+            if(patrocinadores.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="2" style="color: #64748b;">No hay patrocinadores registrados.</td></tr>`;
+                return;
+            }
+            patrocinadores.forEach((pat, index) => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="text-align:left;"><b>${pat.nombre}</b> ${pat.logo ? '(Con Logo)' : ''}</td>
+                    <td><button class="btn-action btn-danger" style="padding: 6px 12px; margin:0; font-size:0.8rem;" onclick="eliminarPatrocinador(${index})">Eliminar</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
         }
 
         function renderizarBillboard() {
             let track = document.getElementById('billboardTrack');
             let html = "";
-
-            // Duplicamos el arreglo para hacer el efecto de bucle infinito perfecto
             let items = [...patrocinadores, ...patrocinadores];
 
             items.forEach(pat => {
