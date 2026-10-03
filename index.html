@@ -68,40 +68,98 @@
             color: #92400e;
         }
 
-        .nav-tabs {
-            display: flex;
-            justify-content: center;
-            background-color: #ffffff;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-            flex-wrap: wrap;
-            gap: 5px;
-            padding: 5px;
-            margin-top: 15px;
+        /* --- NUEVO DISEÑO ELEGANTE DE PESTAÑAS EN GRID --- */
+        .nav-container {
+            max-width: 1100px;
+            margin: 20px auto 0 auto;
+            padding: 0 15px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
         .nav-tab {
-            padding: 12px 18px;
+            padding: 12px 14px;
             cursor: pointer;
             font-weight: 600;
-            color: #64748b;
-            border-radius: 6px;
+            color: #475569;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
             transition: all 0.25s ease;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .nav-tab:hover {
-            background-color: #f8fafc;
+            background-color: #f1f5f9;
             color: var(--primary-color);
+            border-color: #cbd5e1;
         }
 
         .nav-tab.active {
             background-color: var(--primary-color);
             color: white;
+            border-color: var(--primary-color);
             box-shadow: 0 2px 6px rgba(106, 27, 41, 0.3);
         }
 
-        .admin-only {
+        /* Contenedor especial para pestañas de administrador */
+        .admin-nav-section {
             display: none;
+            margin-top: 12px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            padding: 12px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .admin-nav-title {
+            color: #f8fafc;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .admin-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 8px;
+        }
+
+        .admin-nav-tab {
+            background-color: #334155;
+            color: #f8fafc;
+            border: 1px solid #475569;
+        }
+
+        .admin-nav-tab:hover {
+            background-color: #475569;
+            color: #ffffff;
+        }
+
+        .admin-nav-tab.active {
+            background-color: var(--highlight-color);
+            color: #ffffff;
+            border-color: var(--highlight-color);
         }
 
         .container {
@@ -188,7 +246,6 @@
             border-color: var(--primary-color);
         }
 
-        /* Contenedor para el input de contraseña con el botón del ojito */
         .password-container {
             position: relative;
             display: flex;
@@ -587,14 +644,6 @@
         }
 
         @media (max-width: 600px) {
-            .nav-tab {
-                padding: 10px 12px;
-                font-size: 0.8rem;
-            }
-            th, td {
-                padding: 8px;
-                font-size: 0.8rem;
-            }
             header h1 {
                 font-size: 1.7rem;
             }
@@ -613,18 +662,27 @@
         <div>📢 <b>Aviso Oficial:</b> <span id="flashText">¡Bienvenidos a la nueva temporada! Consulta el rol y las estadísticas actualizadas.</span></div>
     </div>
 
-    <div class="nav-tabs">
-        <div class="nav-tab active" onclick="switchTab(event, 'posiciones')">🏆 Posiciones</div>
-        <div class="nav-tab" onclick="switchTab(event, 'lideres')">⭐ Líderes</div>
-        <div class="nav-tab" onclick="switchTab(event, 'rol')">📅 Rol de Juegos</div>
-        <div class="nav-tab" onclick="switchTab(event, 'resultados')">⚾ Resultados</div>
-        <div class="nav-tab" onclick="switchTab(event, 'equipos')">👥 Equipos y Roster</div>
-        <div class="nav-tab" onclick="switchTab(event, 'galeria')">📸 Galería y Crónicas</div>
-        <!-- Pestañas protegidas -->
-        <div id="tab-admin-eq" class="nav-tab admin-only" onclick="switchTab(event, 'admEquipos')">⚙️ Admin Equipos</div>
-        <div id="tab-rol-admin" class="nav-tab admin-only" onclick="switchTab(event, 'admRol')">🗓️ Admin Rol</div>
-        <div id="tab-captura" class="nav-tab admin-only" onclick="switchTab(event, 'captura')">⚡ Registrar Marcador</div>
-        <div id="tab-galeria-admin" class="nav-tab admin-only" onclick="switchTab(event, 'admGaleria')">📷 Admin General</div>
+    <!-- Navegación Organizada y Elegante -->
+    <div class="nav-container">
+        <div class="nav-grid">
+            <div class="nav-tab active" onclick="switchTab(event, 'posiciones')">🏆 Posiciones</div>
+            <div class="nav-tab" onclick="switchTab(event, 'lideres')">⭐ Líderes</div>
+            <div class="nav-tab" onclick="switchTab(event, 'rol')">📅 Rol</div>
+            <div class="nav-tab" onclick="switchTab(event, 'resultados')">⚾ Resultados</div>
+            <div class="nav-tab" onclick="switchTab(event, 'equipos')">👥 Equipos</div>
+            <div class="nav-tab" onclick="switchTab(event, 'galeria')">📸 Galería</div>
+        </div>
+
+        <!-- Panel de Pestañas Protegidas de Administrador -->
+        <div id="adminNavSection" class="admin-nav-section admin-only">
+            <div class="admin-nav-title">⚙️ Panel de Administración</div>
+            <div class="admin-nav-grid">
+                <div class="nav-tab admin-nav-tab" onclick="switchTab(event, 'admEquipos')">👥 Admin Equipos</div>
+                <div class="nav-tab admin-nav-tab" onclick="switchTab(event, 'admRol')">🗓️ Admin Rol</div>
+                <div class="nav-tab admin-nav-tab" onclick="switchTab(event, 'captura')">⚡ Marcador</div>
+                <div class="nav-tab admin-nav-tab" onclick="switchTab(event, 'admGaleria')">📷 Admin General</div>
+            </div>
+        </div>
     </div>
 
     <div class="container">
@@ -859,7 +917,6 @@
             <div class="admin-box" style="border-color: #cbd5e1; background: #f8fafc;">
                 <h3 style="color: var(--primary-color);">Gestión de Patrocinadores (Valla Publicitaria)</h3>
                 
-                <!-- Campos ocultos para edición -->
                 <input type="hidden" id="editSponsorIndex" value="-1">
                 <input type="hidden" id="inputSponsorLogo" value="">
 
@@ -1048,7 +1105,13 @@
             tabs.forEach(tab => tab.classList.remove('active'));
 
             document.getElementById(tabName).classList.add('active');
-            evt.currentTarget.classList.add('active');
+            
+            // Marcar todas las pestañas con el mismo nombre de clase como activas si aplica
+            document.querySelectorAll(`.nav-tab`).forEach(tab => {
+                if(tab.getAttribute('onclick') && tab.getAttribute('onclick').includes(tabName)) {
+                    tab.classList.add('active');
+                }
+            });
 
             if(tabName === 'posiciones') actualizarTablaPosiciones();
             else if(tabName === 'lideres') renderizarLideresIndividuales();
@@ -1088,11 +1151,8 @@
 
             if (ADMINS_PERMITIDOS[u] && ADMINS_PERMITIDOS[u] === p) {
                 cerrarModalLogin();
-                document.getElementById('tab-admin-eq').style.display = 'block';
-                document.getElementById('tab-rol-admin').style.display = 'block';
-                document.getElementById('tab-captura').style.display = 'block';
-                document.getElementById('tab-galeria-admin').style.display = 'block';
-                switchTab({ currentTarget: document.getElementById('tab-admin-eq') }, 'admEquipos');
+                document.getElementById('adminNavSection').style.display = 'block';
+                switchTab({ currentTarget: document.querySelectorAll('.admin-nav-tab')[0] }, 'admEquipos');
                 actualizarSelectsEquipos();
                 document.getElementById('inputFlashText').value = avisoFlash;
                 renderizarTablaPatrocinadoresAdmin();
@@ -1103,10 +1163,7 @@
         }
 
         function cerrarSesionAdmin() {
-            document.getElementById('tab-admin-eq').style.display = 'none';
-            document.getElementById('tab-rol-admin').style.display = 'none';
-            document.getElementById('tab-captura').style.display = 'none';
-            document.getElementById('tab-galeria-admin').style.display = 'none';
+            document.getElementById('adminNavSection').style.display = 'none';
             switchTab({ currentTarget: document.querySelectorAll('.nav-tab')[0] }, 'posiciones');
             alert("Sesión de administrador cerrada.");
         }
