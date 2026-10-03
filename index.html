@@ -18,6 +18,9 @@
             padding: 0;
             background-color: var(--secondary-color);
             color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         header {
@@ -61,7 +64,6 @@
             border-bottom: 3px solid var(--accent-color);
         }
 
-        /* Ocultar pestaña de captura por defecto */
         #tab-captura {
             display: none;
         }
@@ -70,6 +72,9 @@
             max-width: 1000px;
             margin: 20px auto;
             padding: 0 15px;
+            flex: 1; /* Empuja el footer hacia abajo */
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .tab-content {
@@ -167,15 +172,23 @@
             background-color: #f9f9f9;
         }
 
-        /* Sección de login al pie de página */
-        .admin-footer-access {
+        /* Pie de página profesional ubicado al fondo */
+        footer {
+            background-color: #112e25;
+            color: #ccc;
             text-align: center;
-            margin: 40px 0 20px;
+            padding: 20px 15px;
             font-size: 0.85rem;
-            color: #777;
+            margin-top: 40px;
         }
 
-        .admin-footer-access span {
+        footer .admin-access-link {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        footer .admin-access-link span {
             color: var(--accent-color);
             cursor: pointer;
             text-decoration: underline;
@@ -301,14 +314,20 @@
 
     </div>
 
-    <!-- Enlace discreto para loguearse como administrador -->
-    <div class="admin-footer-access">
-        ¿Eres administrador de la liga? <span onclick="pedirPassword()">Iniciar Sesión</span>
-    </div>
+    <!-- Pie de página con derechos reservados y acceso de administrador muy abajo -->
+    <footer>
+        <div>| Derechos Reservados Tonny Macías Limón | Villa Juárez Navolato Sinaloa | 2026 |</div>
+        <div class="admin-access-link">
+            ¿Eres administrador de la liga? <span onclick="pedirCredenciales()">Iniciar Sesión</span>
+        </div>
+    </footer>
 
     <script>
-        // Contraseña predeterminada (puedes cambiarla aquí mismo entre las comillas)
-        const PASSWORD_ADMIN = "softbol2026";
+        // Lista de usuarios y contraseñas permitidos (puedes cambiarlos o agregar más aquí)
+        const ADMINS_PERMITIDOS = {
+            "tonny": "softbol2026",
+            "admin": "liga1234"
+        };
 
         let equipos = {
             "Cachorros": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0 },
@@ -334,22 +353,26 @@
             }
         }
 
-        function pedirPassword() {
-            let ingreso = prompt("Ingresa la contraseña de administrador:");
-            if (ingreso === PASSWORD_ADMIN) {
+        function pedirCredenciales() {
+            let usuarioIngresado = prompt("Ingresa tu usuario de administrador:");
+            if (usuarioIngresado === null) return; // Si cancela
+
+            let passwordIngresado = prompt("Ingresa tu contraseña:");
+            if (passwordIngresado === null) return; // Si cancela
+
+            // Validar si el usuario existe y la contraseña coincide
+            if (ADMINS_PERMITIDOS[usuarioIngresado] && ADMINS_PERMITIDOS[usuarioIngresado] === passwordIngresado) {
                 // Mostrar pestaña de captura
                 document.getElementById('tab-captura').style.display = 'block';
-                // Cambiar automáticamente a la pestaña de captura
                 switchTab({ currentTarget: document.getElementById('tab-captura') }, 'captura');
-                alert("¡Acceso concedido! Ahora puedes registrar y modificar resultados.");
-            } else if (ingreso !== null) {
-                alert("Contraseña incorrecta.");
+                alert(`¡Bienvenido, ${usuarioIngresado}! Acceso concedido.`);
+            } else {
+                alert("Usuario o contraseña incorrectos.");
             }
         }
 
         function cerrarSesionAdmin() {
             document.getElementById('tab-captura').style.display = 'none';
-            // Regresar a la tabla de posiciones por seguridad
             switchTab({ currentTarget: document.querySelectorAll('.nav-tab')[1] }, 'posiciones');
             alert("Sesión de administrador cerrada correctamente.");
         }
