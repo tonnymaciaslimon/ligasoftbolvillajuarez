@@ -61,6 +61,11 @@
             border-bottom: 3px solid var(--accent-color);
         }
 
+        /* Ocultar pestaña de captura por defecto */
+        #tab-captura {
+            display: none;
+        }
+
         .container {
             max-width: 1000px;
             margin: 20px auto;
@@ -135,7 +140,6 @@
             opacity: 0.9;
         }
 
-        /* Contenedor de tabla con scroll horizontal para celulares si hay muchas columnas */
         .table-responsive {
             overflow-x: auto;
         }
@@ -163,6 +167,21 @@
             background-color: #f9f9f9;
         }
 
+        /* Sección de login al pie de página */
+        .admin-footer-access {
+            text-align: center;
+            margin: 40px 0 20px;
+            font-size: 0.85rem;
+            color: #777;
+        }
+
+        .admin-footer-access span {
+            color: var(--accent-color);
+            cursor: pointer;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
         @media (max-width: 600px) {
             .nav-tab {
                 padding: 12px 10px;
@@ -183,17 +202,17 @@
     </header>
 
     <div class="nav-tabs">
-        <div class="nav-tab active" onclick="switchTab(event, 'captura')">⚡ Registrar Resultado</div>
-        <div class="nav-tab" onclick="switchTab(event, 'posiciones')">🏆 Posiciones</div>
+        <div id="tab-captura" class="nav-tab" onclick="switchTab(event, 'captura')">⚡ Registrar Resultado</div>
+        <div class="nav-tab active" onclick="switchTab(event, 'posiciones')">🏆 Posiciones</div>
         <div class="nav-tab" onclick="switchTab(event, 'resultados')">⚾ Historial de Juegos</div>
     </div>
 
     <div class="container">
 
-        <!-- SECCIÓN 1: CAPTURAR RESULTADOS -->
-        <div id="captura" class="tab-content active">
-            <h2>Capturar Marcador de Partido</h2>
-            <p>Selecciona los equipos, anota sus carreras y el sistema actualizará la tabla general automáticamente.</p>
+        <!-- SECCIÓN 1: CAPTURAR RESULTADOS (Protegida) -->
+        <div id="captura" class="tab-content">
+            <h2>Capturar Marcador de Partido (Modo Administrador)</h2>
+            <p>Registra los marcadores oficiales. Los cambios se reflejarán en la tabla pública.</p>
             
             <div class="admin-box">
                 <div class="form-row">
@@ -229,11 +248,12 @@
                 </div>
 
                 <button class="btn-action" onclick="registrarJuego()">Guardar y Actualizar Tabla</button>
+                <button class="btn-action" style="background-color: #666; margin-top: 10px;" onclick="cerrarSesionAdmin()">Cerrar Sesión de Administrador</button>
             </div>
         </div>
 
         <!-- SECCIÓN 2: TABLA DE POSICIONES -->
-        <div id="posiciones" class="tab-content">
+        <div id="posiciones" class="tab-content active">
             <h2>Tabla de Posiciones General</h2>
             <p>Se actualiza de forma automática incluyendo carreras anotadas y recibidas.</p>
             <div class="table-responsive">
@@ -281,8 +301,15 @@
 
     </div>
 
+    <!-- Enlace discreto para loguearse como administrador -->
+    <div class="admin-footer-access">
+        ¿Eres administrador de la liga? <span onclick="pedirPassword()">Iniciar Sesión</span>
+    </div>
+
     <script>
-        // Base de datos de equipos: jj (juegos jugados), jg (ganados), jp (perdidos), ca (carreras anotadas), cr (carreras recibidas)
+        // Contraseña predeterminada (puedes cambiarla aquí mismo entre las comillas)
+        const PASSWORD_ADMIN = "softbol2026";
+
         let equipos = {
             "Cachorros": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0 },
             "Diablos Rojos": { jj: 0, jg: 0, jp: 0, ca: 0, cr: 0 },
@@ -307,6 +334,26 @@
             }
         }
 
+        function pedirPassword() {
+            let ingreso = prompt("Ingresa la contraseña de administrador:");
+            if (ingreso === PASSWORD_ADMIN) {
+                // Mostrar pestaña de captura
+                document.getElementById('tab-captura').style.display = 'block';
+                // Cambiar automáticamente a la pestaña de captura
+                switchTab({ currentTarget: document.getElementById('tab-captura') }, 'captura');
+                alert("¡Acceso concedido! Ahora puedes registrar y modificar resultados.");
+            } else if (ingreso !== null) {
+                alert("Contraseña incorrecta.");
+            }
+        }
+
+        function cerrarSesionAdmin() {
+            document.getElementById('tab-captura').style.display = 'none';
+            // Regresar a la tabla de posiciones por seguridad
+            switchTab({ currentTarget: document.querySelectorAll('.nav-tab')[1] }, 'posiciones');
+            alert("Sesión de administrador cerrada correctamente.");
+        }
+
         function registrarJuego() {
             let local = document.getElementById('localTeam').value;
             let visitante = document.getElementById('visitTeam').value;
@@ -318,18 +365,15 @@
                 return;
             }
 
-            // Actualizar juegos jugados
             equipos[local].jj++;
             equipos[visitante].jj++;
 
-            // Registrar carreras anotadas y recibidas
             equipos[local].ca += scoreLocal;
             equipos[local].cr += scoreVisitante;
 
             equipos[visitante].ca += scoreVisitante;
             equipos[visitante].cr += scoreLocal;
 
-            // Determinar ganador y perdedor
             if(scoreLocal > scoreVisitante) {
                 equipos[local].jg++;
                 equipos[visitante].jp++;
@@ -338,7 +382,6 @@
                 equipos[local].jp++;
             } else {
                 alert("En el sóftbol regular usualmente no hay empates, pero si ocurrió, ajusta las carreras para definir un ganador.");
-                // Revertir cambios si hay empate exacto
                 equipos[local].jj--;
                 equipos[visitante].jj--;
                 equipos[local].ca -= scoreLocal;
@@ -348,7 +391,6 @@
                 return;
             }
 
-            // Agregar al historial
             historialResultados.push({
                 local: local,
                 score: `${scoreLocal} - ${scoreVisitante}`,
@@ -358,10 +400,8 @@
             actualizarTablaResultados();
             actualizarTablaPosiciones();
 
-            // Mensaje personalizado solicitado
             alert("Carreras anotadas exitosamente, favor de revisar la tabla de posiciones y verificar que esté correcto.");
             
-            // Limpiar inputs
             document.getElementById('localScore').value = 0;
             document.getElementById('visitScore').value = 0;
         }
@@ -381,21 +421,18 @@
             let tbody = document.getElementById('standingsTableBody');
             tbody.innerHTML = "";
 
-            // Convertir objeto a array para ordenar
             let arrayEquipos = Object.keys(equipos).map(nombre => {
                 let e = equipos[nombre];
                 let pct = e.jj > 0 ? (e.jg / e.jj).toFixed(3) : ".000";
-                let dif = e.ca - e.cr; // Diferencia de carreras
+                let dif = e.ca - e.cr;
                 return { nombre, ...e, pct, dif };
             });
 
-            // Ordenar: Mayor JG, menor JP, y mayor Diferencia de carreras (DIF) en caso de empate
             arrayEquipos.sort((a, b) => b.jg - a.jg || a.jp - b.jp || b.dif - a.dif);
 
-            // Pintar en la tabla
             arrayEquipos.forEach((eq, index) => {
                 let tr = document.createElement('tr');
-                let difTexto = eq.dif > 0 ? `+${eq.dif}` : eq.dif; // Agregar signo + si es positivo
+                let difTexto = eq.dif > 0 ? `+${eq.dif}` : eq.dif;
                 tr.innerHTML = `
                     <td>${index + 1}. ${eq.nombre}</td>
                     <td>${eq.jj}</td>
@@ -410,7 +447,6 @@
             });
         }
 
-        // Cargar la tabla al iniciar
         actualizarTablaPosiciones();
     </script>
 
