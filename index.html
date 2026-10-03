@@ -280,18 +280,6 @@
             background-color: #f8fafc;
         }
 
-        .team-logo-name {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .team-logo-name img {
-            width: 24px;
-            height: 24px;
-            object-fit: contain;
-        }
-
         footer {
             background-color: var(--accent-color);
             color: #94a3b8;
@@ -349,7 +337,7 @@
         <!-- 1. POSICIONES -->
         <div id="posiciones" class="tab-content active">
             <h2>Tabla de Posiciones General</h2>
-            <p>Estadísticas generales actualizadas de la temporada[span_0](start_span)[span_0](end_span).</p>
+            <p>Estadísticas generales actualizadas de la temporada.</p>
             <div class="table-responsive">
                 <table>
                     <thead>
@@ -397,7 +385,7 @@
         <!-- 4. EQUIPOS Y ROSTERS -->
         <div id="equipos" class="tab-content">
             <h2>Equipos y Estadísticas de Jugadores</h2>
-            <p>Haz clic en cualquier equipo para desplegar su roster y estadísticas detalladas[span_1](start_span)[span_1](end_span).</p>
+            <p>Haz clic en cualquier equipo para desplegar su roster y estadísticas detalladas.</p>
             <div id="teamsContainer"></div>
         </div>
 
@@ -579,7 +567,6 @@
             "admin": "liga1234"
         };
 
-        // Iconos/emojis distintivos integrados para cada equipo de la LMP
         const LOGOS_EQUIPOS = {
             "Tomateros de Culiacán": "🍅",
             "Naranjeros de Hermosillo": "🍊",
