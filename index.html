@@ -268,7 +268,7 @@
         }
 
         th:nth-child(2), td:nth-child(2) {
-            text-align: left; /* Alinear nombres a la izquierda */
+            text-align: left;
         }
 
         th {
@@ -278,6 +278,18 @@
 
         tr:hover {
             background-color: #f8fafc;
+        }
+
+        .team-logo-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .team-logo-name img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
         }
 
         footer {
@@ -334,10 +346,10 @@
 
     <div class="container">
 
-        <!-- 1. POSICIONES (W, L, PCT, DIF, RACHA) -->
+        <!-- 1. POSICIONES -->
         <div id="posiciones" class="tab-content active">
             <h2>Tabla de Posiciones General</h2>
-            <p>Estadísticas generales actualizadas de la temporada[span_9](start_span)[span_9](end_span).</p>
+            <p>Estadísticas generales actualizadas de la temporada[span_0](start_span)[span_0](end_span).</p>
             <div class="table-responsive">
                 <table>
                     <thead>
@@ -382,10 +394,10 @@
             </div>
         </div>
 
-        <!-- 4. EQUIPOS Y ROSTERS (Con POS, AVG, PA, AB, HIT, 2B, 3B, HR, RBI) -->
+        <!-- 4. EQUIPOS Y ROSTERS -->
         <div id="equipos" class="tab-content">
             <h2>Equipos y Estadísticas de Jugadores</h2>
-            <p>Haz clic en cualquier equipo para desplegar su roster y estadísticas detalladas[span_10](start_span)[span_10](end_span).</p>
+            <p>Haz clic en cualquier equipo para desplegar su roster y estadísticas detalladas[span_1](start_span)[span_1](end_span).</p>
             <div id="teamsContainer"></div>
         </div>
 
@@ -567,6 +579,24 @@
             "admin": "liga1234"
         };
 
+        // Iconos/emojis distintivos integrados para cada equipo de la LMP
+        const LOGOS_EQUIPOS = {
+            "Tomateros de Culiacán": "🍅",
+            "Naranjeros de Hermosillo": "🍊",
+            "Venados de Mazatlán": "🦌",
+            "Charros de Jalisco": "🤠",
+            "Yaquis de Obregón": "🏹",
+            "Cañeros de Los Mochis": "🌾",
+            "Algodoneros de Guasave": "☁️",
+            "Mayos de Navojoa": "🦅",
+            "Águilas de Mexicali": "🦅",
+            "Sultanes de Monterrey": "👑"
+        };
+
+        function obtenerLogo(nombre) {
+            return LOGOS_EQUIPOS[nombre] || "⚾";
+        }
+
         const EQUIPOS_LMP = {
             "Tomateros de Culiacán": { w: 0, l: 0, ca: 0, cr: 0, racha: "G1", jugadores: [] },
             "Naranjeros de Hermosillo": { w: 0, l: 0, ca: 0, cr: 0, racha: "G1", jugadores: [] },
@@ -650,7 +680,6 @@
             alert("Sesión de administrador cerrada.");
         }
 
-        // Cálculo automático de AVG mientras se escribe
         function calcularAvg() {
             let ab = parseInt(document.getElementById('playerAB').value) || 0;
             let hit = parseInt(document.getElementById('playerHIT').value) || 0;
@@ -664,7 +693,6 @@
             }
         }
 
-        // --- GESTIÓN DE EQUIPOS Y JUGADORES ---
         function agregarEquipo() {
             let input = document.getElementById('newTeamName');
             let nombre = input.value.trim();
@@ -722,7 +750,6 @@
             alert(`Jugador añadido correctamente al roster.`);
         }
 
-        // --- PROGRAMAR ROL DE JUEGOS ---
         function agregarJuegoRol() {
             let jornada = document.getElementById('rolJornada').value.trim();
             let fecha = document.getElementById('rolFecha').value.trim();
@@ -771,6 +798,7 @@
 
             nombres.forEach(nombre => {
                 let eq = equipos[nombre];
+                let logo = obtenerLogo(nombre);
                 let card = document.createElement('div');
                 card.className = 'team-card';
 
@@ -788,7 +816,7 @@
 
                 card.innerHTML = `
                     <div class="team-header" onclick="toggleTeamBody(this)">
-                        <span>⚾ ${nombre} (${eq.jugadores ? eq.jugadores.length : 0} jugadores)</span>
+                        <span style="display:flex; align-items:center; gap:8px;"><span style="font-size:1.2rem;">${logo}</span> ${nombre} (${eq.jugadores ? eq.jugadores.length : 0} jugadores)</span>
                         <span>▼</span>
                     </div>
                     <div class="team-body">
@@ -828,7 +856,9 @@
                     <thead><tr><th>Fecha / Hora</th><th>Campo</th><th>Local</th><th>VS</th><th>Visitante</th></tr></thead><tbody>`;
                 
                 jornadasMap[jor].forEach(p => {
-                    html += `<tr><td>${p.fecha}</td><td>${p.campo}</td><td><b>${p.local}</b></td><td>vs</td><td><b>${p.visitante}</b></td></tr>`;
+                    let logoLocal = obtenerLogo(p.local);
+                    let logoVisit = obtenerLogo(p.visitante);
+                    html += `<tr><td>${p.fecha}</td><td>${p.campo}</td><td><b>${logoLocal} ${p.local}</b></td><td>vs</td><td><b>${logoVisit} ${p.visitante}</b></td></tr>`;
                 });
                 html += `</tbody></table></div>`;
                 box.innerHTML = html;
@@ -877,8 +907,10 @@
                 return;
             }
             historialResultados.forEach(p => {
+                let logoLocal = obtenerLogo(p.local);
+                let logoVisit = obtenerLogo(p.visitante);
                 let tr = document.createElement('tr');
-                tr.innerHTML = `<td>${p.local}</td><td><strong>${p.score}</strong></td><td>${p.visitante}</td>`;
+                tr.innerHTML = `<td>${logoLocal} ${p.local}</td><td><strong>${p.score}</strong></td><td>${logoVisit} ${p.visitante}</td>`;
                 tbody.appendChild(tr);
             });
         }
@@ -894,17 +926,22 @@
                 return { nombre, ...e, jj, pct };
             });
 
-            // Ordenar por Juegos Ganados (W) descendente
             arr.sort((a, b) => b.w - a.w || a.l - b.l);
 
-            // Calcular DIF respecto al líder (W líder - W equipo)
             let leaderW = arr.length > 0 ? arr[0].w : 0;
 
             arr.forEach((eq, idx) => {
+                let logo = obtenerLogo(eq.nombre);
                 let tr = document.createElement('tr');
                 let dif = (leaderW - eq.w).toFixed(1);
                 tr.innerHTML = `
-                    <td style="text-align:left;"><b>${idx + 1} - ${eq.nombre}</b></td>
+                    <td style="text-align:left;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span><b>${idx + 1}</b></span>
+                            <span style="font-size:1.2rem;">${logo}</span>
+                            <b>${eq.nombre}</b>
+                        </div>
+                    </td>
                     <td><b>${eq.w}</b></td>
                     <td>${eq.l}</td>
                     <td>${eq.pct}</td>
