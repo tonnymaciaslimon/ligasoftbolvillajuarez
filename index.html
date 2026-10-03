@@ -217,6 +217,13 @@
             background-color: #dc2626;
         }
 
+        button.btn-warning {
+            background-color: #d97706;
+        }
+        button.btn-warning:hover {
+            background-color: #b45309;
+        }
+
         /* Modal de Login */
         .modal-overlay {
             display: none;
@@ -823,6 +830,10 @@
 
             <div class="admin-box" style="border-color: #cbd5e1; background: #f8fafc;">
                 <h3 style="color: var(--primary-color);">Gestión de Patrocinadores (Valla Publicitaria)</h3>
+                
+                <!-- Campos ocultos para edición -->
+                <input type="hidden" id="editSponsorIndex" value="-1">
+
                 <div class="form-row">
                     <div class="form-group">
                         <label>Nombre del Patrocinador</label>
@@ -833,14 +844,17 @@
                         <input type="text" id="inputSponsorLogo" placeholder="https://ejemplo.com/logo.png">
                     </div>
                 </div>
-                <button class="btn-action" style="max-width: 220px; margin-bottom: 20px;" onclick="agregarPatrocinador()">Agregar Patrocinador</button>
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button class="btn-action" style="max-width: 220px; margin-top:0;" onclick="guardarPatrocinador()">Guardar Patrocinador</button>
+                    <button id="btnCancelEdit" class="btn-action btn-danger" style="max-width: 160px; margin-top:0; display:none;" onclick="cancelarEdicionPatrocinador()">Cancelar</button>
+                </div>
                 
                 <h4>Patrocinadores Registrados:</h4>
                 <div class="table-responsive">
                     <table>
                         <thead>
                             <tr>
-                                <th>Patrocinador</th>
+                                <th>Patrocinador / Logo</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -1066,19 +1080,45 @@
             document.getElementById('flashText').innerText = avisoFlash;
         }
 
-        function agregarPatrocinador() {
+        function guardarPatrocinador() {
             let nombre = document.getElementById('inputSponsorName').value.trim();
             let logo = document.getElementById('inputSponsorLogo').value.trim();
+            let editIndex = parseInt(document.getElementById('editSponsorIndex').value);
 
             if(!nombre) { alert("Ingresa el nombre del patrocinador."); return; }
 
-            patrocinadores.push({ nombre, logo });
+            if(editIndex === -1) {
+                // Nuevo
+                patrocinadores.push({ nombre, logo });
+                alert("Patrocinador agregado exitosamente.");
+            } else {
+                // Modificar existente
+                patrocinadores[editIndex] = { nombre, logo };
+                alert("Patrocinador actualizado correctamente.");
+                cancelarEdicionPatrocinador();
+            }
+
             guardarDatos();
             renderizarBillboard();
             renderizarTablaPatrocinadoresAdmin();
             document.getElementById('inputSponsorName').value = "";
             document.getElementById('inputSponsorLogo').value = "";
-            alert("Patrocinador agregado exitosamente.");
+        }
+
+        function editarPatrocinador(index) {
+            let pat = patrocinadores[index];
+            document.getElementById('inputSponsorName').value = pat.nombre;
+            document.getElementById('inputSponsorLogo').value = pat.logo;
+            document.getElementById('editSponsorIndex').value = index;
+            document.getElementById('btnCancelEdit').style.display = 'inline-block';
+            window.scrollTo({ top: 300, behavior: 'smooth' });
+        }
+
+        function cancelarEdicionPatrocinador() {
+            document.getElementById('inputSponsorName').value = "";
+            document.getElementById('inputSponsorLogo').value = "";
+            document.getElementById('editSponsorIndex').value = "-1";
+            document.getElementById('btnCancelEdit').style.display = 'none';
         }
 
         function eliminarPatrocinador(index) {
@@ -1087,6 +1127,7 @@
                 guardarDatos();
                 renderizarBillboard();
                 renderizarTablaPatrocinadoresAdmin();
+                cancelarEdicionPatrocinador();
                 alert("Patrocinador eliminado.");
             }
         }
@@ -1102,8 +1143,14 @@
             patrocinadores.forEach((pat, index) => {
                 let tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td style="text-align:left;"><b>${pat.nombre}</b> ${pat.logo ? '(Con Logo)' : ''}</td>
-                    <td><button class="btn-action btn-danger" style="padding: 6px 12px; margin:0; font-size:0.8rem;" onclick="eliminarPatrocinador(${index})">Eliminar</button></td>
+                    <td style="text-align:left;">
+                        <b>${pat.nombre}</b><br>
+                        <span style="font-size:0.75rem; color:#64748b;">${pat.logo ? 'Logo: ' + pat.logo : 'Sin logo (Texto)'}</span>
+                    </td>
+                    <td>
+                        <button class="btn-action btn-warning" style="padding: 6px 10px; margin:0 4px 0 0; font-size:0.8rem; display:inline-block; width:auto;" onclick="editarPatrocinador(${index})">Editar</button>
+                        <button class="btn-action btn-danger" style="padding: 6px 10px; margin:0; font-size:0.8rem; display:inline-block; width:auto;" onclick="eliminarPatrocinador(${index})">Eliminar</button>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
